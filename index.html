@@ -95,6 +95,51 @@
             border-radius: 4px;
             margin-bottom: 6px;
         }
+
+        /* Custom SVG Pin Marker Styling */
+        .custom-pin-icon {
+            background: transparent;
+            border: none;
+        }
+        .pin-svg {
+            filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.4));
+            transition: transform 0.2s ease;
+        }
+        .pin-svg:hover {
+            transform: scale(1.15);
+        }
+
+        /* Legenda Styling (Kanan Atas) */
+        .legend {
+            background: white;
+            padding: 12px 15px;
+            line-height: 20px;
+            color: #333;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-size: 0.82rem;
+        }
+        .legend h4 {
+            margin: 0 0 8px 0;
+            font-size: 0.9rem;
+            color: #1a365d;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 4px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+        .legend-item:last-child {
+            margin-bottom: 0;
+        }
+        .legend-pin-icon {
+            width: 16px;
+            height: 20px;
+            margin-right: 8px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -118,6 +163,45 @@
             maxZoom: 18,
             attribution: '&copy; OpenStreetMap contributors | PT Geoarta Sinar Mandala'
         }).addTo(map);
+
+        // Pemetaan Warna berdasarkan Kategori
+        const colorMap = {
+            "Pengukuran Topografi": "#D2B48C",       // Cokelat Muda (Tanah)
+            "Pengukuran Fotogrametri": "#38BDF8",   // Biru Muda (Langit)
+            "Pengukuran Batimetri": "#1E3A8A",      // Biru Tua (Air)
+            "Pengukuran BM / Kontrol Geodetik": "#8B4513", // Cokelat Tua (Tanah)
+            "Pengolahan Data Spasial": "#4ADE80"    // Hijau Muda (Citra Satelit)
+        };
+
+        // Fungsi penentuan kategori dari nama pekerjaan
+        function getCategory(pekerjaan) {
+            const p = pekerjaan.toLowerCase();
+            if (p.includes('topografi')) return "Pengukuran Topografi";
+            if (p.includes('foto udara') || p.includes('lidar') || p.includes('video')) return "Pengukuran Fotogrametri";
+            if (p.includes('hidrografi') || p.includes('batimetri') || p.includes('usv')) return "Pengukuran Batimetri";
+            if (p.includes('stake out') || p.includes('soil test')) return "Pengukuran BM / Kontrol Geodetik";
+            if (p.includes('lod 1') || p.includes('dem')) return "Pengolahan Data Spasial";
+            
+            return "Pengukuran Topografi"; // Default Fallback
+        }
+
+        // Fungsi membuat SVG Icon Pin Peta Klasik
+        function createPinIcon(color) {
+            const svgHtml = `
+                <svg class="pin-svg" width="26" height="38" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
+                    <path fill="${color}" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" 
+                          d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/>
+                    <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/>
+                </svg>
+            `;
+            return L.divIcon({
+                className: 'custom-pin-icon',
+                html: svgHtml,
+                iconSize: [26, 38],
+                iconAnchor: [13, 38],
+                popupAnchor: [0, -34]
+            });
+        }
 
         // Data Pekerjaan dari Company Profile
         const dataPengalaman = [
@@ -197,10 +281,11 @@
             { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, foto: "" }
         ];
 
-        // Loop data dan buat Marker
+        // Loop data dan buat Marker dengan Simbologi Warna Pin SVG
         dataPengalaman.forEach(item => {
+            const kategori = getCategory(item.pekerjaan);
+            const warna = colorMap[kategori];
             
-            // Penanganan Gambar (Menggunakan Gambar Placeholder jika foto belum dimasukkan)
             let imageHTML = `
                 <div class="popup-img-container">
                     <div class="img-placeholder">
@@ -215,12 +300,12 @@
                 </div>`;
             }
 
-            // Konten Popup saat titik diklik
             const popupContent = `
                 <div class="popup-card">
                     <span class="badge-year">${item.tahun}</span>
                     <h3>${item.pekerjaan}</h3>
                     <div class="popup-info">
+                        <strong>Kategori:</strong> ${kategori}<br>
                         <strong>Lokasi:</strong> ${item.lokasi}<br>
                         <strong>Instansi:</strong> ${item.instansi}
                     </div>
@@ -228,11 +313,38 @@
                 </div>
             `;
 
-            // Tambahkan marker ke peta
-            L.marker([item.lat, item.lng])
-                .addTo(map)
-                .bindPopup(popupContent);
+            L.marker([item.lat, item.lng], {
+                icon: createPinIcon(warna)
+            })
+            .addTo(map)
+            .bindPopup(popupContent);
         });
+
+        // Menambahkan Legenda Peta (Posisi Kanan Atas)
+        const legend = L.control({ position: 'topright' });
+
+        legend.onAdd = function (map) {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = '<h4>Legenda Pekerjaan</h4>';
+            
+            for (const [kategori, warna] of Object.entries(colorMap)) {
+                const miniPinSvg = `
+                    <svg class="legend-pin-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="${warna}" stroke="#999" stroke-width="1.5" d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/>
+                        <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/>
+                    </svg>
+                `;
+                div.innerHTML += `
+                    <div class="legend-item">
+                        ${miniPinSvg}
+                        <span>${kategori}</span>
+                    </div>
+                `;
+            }
+            return div;
+        };
+
+        legend.addTo(map);
     </script>
 </body>
 </html>
