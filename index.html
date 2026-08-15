@@ -176,11 +176,11 @@
         // Fungsi penentuan kategori dari nama pekerjaan
         function getCategory(pekerjaan) {
             const p = pekerjaan.toLowerCase();
-            if (p.includes('topografi')) return "Pengukuran Topografi";
-            if (p.includes('foto udara') || p.includes('lidar') || p.includes('video')) return "Pengukuran Fotogrametri";
-            if (p.includes('hidrografi') || p.includes('batimetri') || p.includes('usv')) return "Pengukuran Batimetri";
-            if (p.includes('stake out') || p.includes('soil test')) return "Pengukuran BM / Kontrol Geodetik";
-            if (p.includes('lod 1') || p.includes('dem')) return "Pengolahan Data Spasial";
+            if (p.includes('topografi') || p.includes('titik zona inti')) return "Pengukuran Topografi";
+            if (p.includes('foto udara') || p.includes('lidar') || p.includes('video') || p.includes('uav') || p.includes('artasky') || p.includes('puna') || p.includes('premark')) return "Pengukuran Fotogrametri";
+            if (p.includes('hidrografi') || p.includes('batimetri') || p.includes('usv') || p.includes('artaboat')) return "Pengukuran Batimetri";
+            if (p.includes('stake out') || p.includes('soil test') || p.includes('gnss')) return "Pengukuran BM / Kontrol Geodetik";
+            if (p.includes('lod 1') || p.includes('dem') || p.includes('qc')) return "Pengolahan Data Spasial";
             
             return "Pengukuran Topografi"; // Default Fallback
         }
@@ -234,6 +234,7 @@
             { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Muara Enim, Sumatera Selatan", instansi: "Rekan", lat: -3.630, lng: 103.780, foto: "" },
             { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "ANUGERAH GLOBAL SUPERINTENDING", lat: -10.177, lng: 123.607, foto: "" },
             { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "PLTU Kupang", lat: -10.160, lng: 123.590, foto: "" },
+            { tahun: 2022, pekerjaan: "QC USV Bathymetry for Irrigation", lokasi: "Indonesia", instansi: "PT Geoarta Sinar Mandala", lat: -6.200, lng: 106.816, foto: "WhatsApp Image 2026-08-15 at 15.43.26.jpeg" },
 
             // --- 2023 ---
             { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gorontalo Utara", instansi: "SANDBOX", lat: 0.888, lng: 122.880, foto: "" },
@@ -264,6 +265,14 @@
             { tahun: 2024, pekerjaan: "Hidrografi", lokasi: "Karawang", instansi: "Karta Bhumi Nusantara", lat: -6.305, lng: 107.301, foto: "" },
             { tahun: 2024, pekerjaan: "Topografi", lokasi: "Gumuk Pasir, Parangtritis", instansi: "Rekan", lat: -8.020, lng: 110.323, foto: "" },
             { tahun: 2024, pekerjaan: "LOD 1", lokasi: "Karanganyar, Jawa Tengah", instansi: "BPN Karanganyar", lat: -7.597, lng: 110.951, foto: "" },
+            { tahun: 2024, pekerjaan: "Stakeout Rencana Jalur Irigasi DI Tingal", lokasi: "Temanggung, Jawa Tengah", instansi: "BBWS-SO", lat: -7.308, lng: 110.165, foto: "WhatsApp Image 2026-08-15 at 15.43.27 (1).jpeg" },
+            { tahun: 2024, pekerjaan: "Survey dan Pemetaan Rencana Daerah Irigasi", lokasi: "Temanggung, Jawa Tengah", instansi: "BBWS-SO", lat: -7.312, lng: 110.168, foto: "WhatsApp Image 2026-08-15 at 15.43.27 (2).jpeg" },
+            { tahun: 2024, pekerjaan: "Survei dan Pemetaan Foto Udara Menggunakan UAV", lokasi: "Kabupaten Gunung Kidul", instansi: "BPN Gunung Kidul", lat: -7.965, lng: 110.605, foto: "WhatsApp Image 2026-08-15 at 15.43.27.jpeg" },
+            { tahun: 2024, pekerjaan: "Pemasangan Premark & Pengukuran GNSS", lokasi: "Kecamatan Tempel, Sleman", instansi: "PT Geoarta Sinar Mandala", lat: -7.653, lng: 110.329, foto: "WhatsApp Image 2026-08-15 at 15.43.28 (1).jpeg" },
+            { tahun: 2024, pekerjaan: "Flight Test Pesawat ArtASky", lokasi: "Sleman, Yogyakarta", instansi: "PT Geoarta Sinar Mandala", lat: -7.710, lng: 110.350, foto: "WhatsApp Image 2026-08-15 at 15.43.28 (2).jpeg" },
+            { tahun: 2024, pekerjaan: "Pembuatan Peta Foto Tegak Menggunakan Pesawat NIR Awak (PUNA)", lokasi: "Godean, Kabupaten Sleman", instansi: "PT Geoarta Sinar Mandala", lat: -7.765, lng: 110.298, foto: "WhatsApp Image 2026-08-15 at 15.43.28 (3).jpeg" },
+            { tahun: 2024, pekerjaan: "Proses Akuisisi Foto Udara Pesawat UAV ArtASky", lokasi: "Kecamatan Tempel, Sleman", instansi: "PT Geoarta Sinar Mandala", lat: -7.658, lng: 110.335, foto: "WhatsApp Image 2026-08-15 at 15.43.28.jpeg" },
+            { tahun: 2024, pekerjaan: "Pengukuran Batimetri Menggunakan USV Artaboat V.2", lokasi: "Pelabuhan Adikarto, Kulon Progo", instansi: "PT Geoarta Sinar Mandala", lat: -7.913, lng: 110.088, foto: "WhatsApp Image 2026-08-15 at 15.43.29 (1).jpeg" },
 
             // --- 2025 ---
             { tahun: 2025, pekerjaan: "Hidrografi", lokasi: "Banjarmasin", instansi: "Obsluzivo Intiloc Indonesia", lat: -3.319, lng: 114.590, foto: "" },
@@ -278,7 +287,8 @@
             { tahun: 2025, pekerjaan: "DEM", lokasi: "Provinsi DIY", instansi: "BBWS-SO", lat: -7.800, lng: 110.400, foto: "" },
             { tahun: 2025, pekerjaan: "Topografi", lokasi: "Temanggung", instansi: "BBWS-SO", lat: -7.318, lng: 110.168, foto: "" },
             { tahun: 2025, pekerjaan: "Topografi", lokasi: "Yogyakarta", instansi: "BBWS-SO", lat: -7.810, lng: 110.370, foto: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, foto: "" }
+            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, foto: "" },
+            { tahun: 2025, pekerjaan: "Pengukuran titik zona inti", lokasi: "Gumuk Pasir, Kabupaten Bantul", instansi: "PT Geoarta Sinar Mandala", lat: -8.023, lng: 110.325, foto: "WhatsApp Image 2026-08-15 at 15.43.26 (1).jpeg" }
         ];
 
         // Loop data dan buat Marker dengan Simbologi Warna Pin SVG
