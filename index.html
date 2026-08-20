@@ -13,50 +13,46 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f5f7fa;
-            padding: 30px 20px;
+            background: #eef2f7;
+            padding: 20px;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            background: white;
-            border-radius: 16px;
-            padding: 35px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
         }
 
         .header {
+            background: linear-gradient(135deg, #1a3c5e, #2a5f7a);
+            color: white;
+            padding: 30px 35px;
+            border-radius: 16px 16px 0 0;
             text-align: center;
-            border-bottom: 3px solid #1a5276;
-            padding-bottom: 20px;
-            margin-bottom: 30px;
         }
 
         .header h1 {
-            color: #1a5276;
-            font-size: 28px;
+            font-size: 30px;
             letter-spacing: 1px;
         }
 
         .header h1 span {
-            color: #e67e22;
+            color: #f1c40f;
         }
 
         .header p {
-            color: #555;
             font-size: 16px;
+            opacity: 0.9;
             margin-top: 6px;
         }
 
         .legenda {
+            background: white;
+            padding: 16px 25px;
             display: flex;
             flex-wrap: wrap;
-            gap: 12px 20px;
-            background: #f0f4f8;
-            padding: 16px 20px;
-            border-radius: 10px;
-            margin-bottom: 25px;
+            gap: 14px 28px;
+            border-bottom: 2px solid #e9edf2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         .legenda-item {
@@ -68,41 +64,114 @@
         }
 
         .legenda-item .dot {
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border-radius: 4px;
+            flex-shrink: 0;
         }
 
         .dot-topografi { background: #3498db; }
-        .dot-fotogrametri { background: #2ecc71; }
+        .dot-fotogrametri { background: #27ae60; }
         .dot-batimetri { background: #e74c3c; }
         .dot-geodetik { background: #f39c12; }
-        .dot-spasial { background: #9b59b6; }
+        .dot-spasial { background: #8e44ad; }
 
-        .detail-pekerjaan {
+        .content {
+            background: white;
+            border-radius: 0 0 16px 16px;
+            padding: 25px 30px 35px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+        }
+
+        .tahun-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding-bottom: 18px;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .btn-tahun {
+            padding: 8px 18px;
+            border: 2px solid #dce1e8;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            transition: all 0.2s;
+        }
+
+        .btn-tahun:hover {
+            border-color: #1a3c5e;
+            color: #1a3c5e;
+        }
+
+        .btn-tahun.active {
+            background: #1a3c5e;
+            border-color: #1a3c5e;
+            color: white;
+        }
+
+        .pekerjaan-detail {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px 30px;
-            background: #fafcfe;
-            padding: 20px 24px;
-            border-radius: 12px;
-            border: 1px solid #e9edf2;
-            margin-bottom: 25px;
+            gap: 6px 30px;
+            background: #f8fafc;
+            padding: 18px 22px;
+            border-radius: 10px;
+            border-left: 5px solid #27ae60;
+            margin-bottom: 20px;
         }
 
-        .detail-pekerjaan .label {
+        .pekerjaan-detail .item {
+            padding: 4px 0;
+        }
+
+        .pekerjaan-detail .label {
             font-weight: 600;
             color: #2c3e50;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        .detail-pekerjaan .value {
-            color: #1a5276;
+        .pekerjaan-detail .value {
+            color: #1a3c5e;
             font-size: 15px;
         }
 
-        .detail-pekerjaan .full-width {
+        .pekerjaan-detail .full {
             grid-column: 1 / -1;
+        }
+
+        .lokasi-section {
+            margin: 18px 0 20px;
+        }
+
+        .lokasi-section h3 {
+            color: #1a3c5e;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .lokasi-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .lokasi-tag {
+            background: #eef3f7;
+            padding: 4px 14px;
+            border-radius: 12px;
+            font-size: 12px;
+            color: #2c3e50;
+            border: 1px solid #dce4ec;
+        }
+
+        .lokasi-tag:hover {
+            background: #dce4ec;
         }
 
         .foto-wrapper {
@@ -111,45 +180,51 @@
             overflow: hidden;
             background: #f8f9fa;
             border: 1px solid #e9edf2;
-            text-align: center;
         }
 
         .foto-wrapper img {
             width: 100%;
-            max-height: 450px;
+            max-height: 500px;
             object-fit: contain;
             background: #f0f2f5;
             display: block;
         }
 
-        .foto-wrapper .foto-caption {
-            padding: 12px 16px;
+        .foto-caption {
+            padding: 12px 18px;
             background: #f8f9fa;
             font-size: 14px;
             color: #555;
             border-top: 1px solid #e9edf2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
         }
 
-        .foto-wrapper .foto-caption .status-error {
+        .foto-caption .status-error {
             color: #e74c3c;
             font-weight: 600;
         }
 
+        .foto-caption .status-success {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
         .btn-refresh {
-            display: inline-block;
-            padding: 10px 28px;
-            background: #1a5276;
+            padding: 8px 20px;
+            background: #1a3c5e;
             color: white;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
-            margin-top: 8px;
             transition: background 0.2s;
         }
 
         .btn-refresh:hover {
-            background: #154360;
+            background: #0f2a42;
         }
 
         .footer {
@@ -161,12 +236,14 @@
             color: #888;
         }
 
-        @media (max-width: 650px) {
-            .detail-pekerjaan {
+        @media (max-width: 700px) {
+            .pekerjaan-detail {
                 grid-template-columns: 1fr;
-                gap: 8px;
+                gap: 4px;
             }
-            .container { padding: 18px; }
+            .header { padding: 20px; }
+            .content { padding: 16px; }
+            .header h1 { font-size: 22px; }
         }
     </style>
 </head>
@@ -174,101 +251,325 @@
 
 <div class="container">
 
-    <!-- HEADER -->
     <div class="header">
         <h1>PT Geoarta <span>Sinar Mandala</span></h1>
-        <p>Peta Persebaran Pengalaman Pekerjaan (2020 - 2025)</p>
+        <p>🗺️ Peta Persebaran Pengalaman Pekerjaan (1960 - 2025)</p>
     </div>
 
-    <!-- LEGENDA -->
     <div class="legenda">
-        <span class="legenda-item"><span class="dot dot-topografi"></span> Pengukuran Topografi</span>
-        <span class="legenda-item"><span class="dot dot-fotogrametri"></span> Pengukuran Fotogrametri</span>
-        <span class="legenda-item"><span class="dot dot-batimetri"></span> Pengukuran Batimetri</span>
-        <span class="legenda-item"><span class="dot dot-geodetik"></span> Pengukuran BM / Kontrol Geodetik</span>
+        <span class="legenda-item"><span class="dot dot-topografi"></span> Topografi</span>
+        <span class="legenda-item"><span class="dot dot-fotogrametri"></span> Fotogrametri</span>
+        <span class="legenda-item"><span class="dot dot-batimetri"></span> Batimetri</span>
+        <span class="legenda-item"><span class="dot dot-geodetik"></span> Kontrol Geodetik</span>
         <span class="legenda-item"><span class="dot dot-spasial"></span> Pengolahan Data Spasial</span>
     </div>
 
-    <!-- DETAIL PEKERJAAN -->
-    <div class="detail-pekerjaan">
-        <div><span class="label">📅 Tahun</span><br><span class="value">2025</span></div>
-        <div><span class="label">📋 Pekerjaan</span><br><span class="value">Pembuatan Peta Foto Tegak</span></div>
-        <div><span class="label">📂 Kategori</span><br><span class="value">Pengukuran Fotogrametri</span></div>
-        <div><span class="label">📍 Lokasi</span><br><span class="value">Kabupaten Malang</span></div>
-        <div class="full-width"><span class="label">🏢 Instansi</span><br><span class="value">KJSB Agus Purwanto</span></div>
-    </div>
+    <div class="content">
 
-    <!-- ====== FOTO PEKERJAAN ====== -->
-    <!-- Ganti src dengan nama file foto kamu yang sebenarnya -->
-    <div class="foto-wrapper">
-        <img 
-            id="fotoPekerjaan"
-            src="foto-malang-2025.jpg" 
-            alt="Foto Pekerjaan - Peta Foto Tegak Malang"
-            onerror="handleFotoError(this)"
-        />
-        <div class="foto-caption" id="fotoCaption">
-            📷 <strong>Foto Pekerjaan</strong> — Peta Foto Tegak Kabupaten Malang
+        <div class="tahun-filter" id="tahunFilter"></div>
+
+        <div id="pekerjaanContainer"></div>
+
+        <div class="footer">
+            © 2026 PT Geoarta Sinar Mandala · Data Pengalaman Pekerjaan 1960-2025
         </div>
-    </div>
-
-    <!-- Tombol Coba Ulang -->
-    <div style="text-align: center;">
-        <button class="btn-refresh" onclick="refreshFoto()">🔄 Coba Muat Ulang Foto</button>
-    </div>
-
-    <div class="footer">
-        © 2026 PT Geoarta Sinar Mandala · Data Pengalaman Pekerjaan 2020-2025
     </div>
 
 </div>
 
 <script>
-    // Fungsi handle error jika foto gagal dimuat
-    function handleFotoError(img) {
-        // Coba ganti dengan foto alternatif
-        img.src = 'foto-placeholder.jpg';
-        img.alt = 'Foto tidak tersedia';
+    // ============================================================
+    // DATA PEKERJAAN
+    // ============================================================
+    const dataPekerjaan = {
+        2025: {
+            tahun: 2025,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            // ⭐ INI NAMA FILE FOTO YANG SUDAH DISESUAIKAN ⭐
+            foto: 'pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        2020: {
+            tahun: 2020,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-2020.jpg', // Ganti dengan nama file asli jika ada
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        2015: {
+            tahun: 2015,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-2015.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        2010: {
+            tahun: 2010,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-2010.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        2005: {
+            tahun: 2005,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-2005.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        2000: {
+            tahun: 2000,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-2000.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1995: {
+            tahun: 1995,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1995.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1990: {
+            tahun: 1990,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1990.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1985: {
+            tahun: 1985,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1985.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1980: {
+            tahun: 1980,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1980.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1975: {
+            tahun: 1975,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1975.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1970: {
+            tahun: 1970,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1970.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1965: {
+            tahun: 1965,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1965.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        },
+        1960: {
+            tahun: 1960,
+            pekerjaan: 'Pembuatan Peta Foto Tegak',
+            kategori: 'Pengukuran Fotogrametri',
+            lokasi: 'Kabupaten Malang',
+            instansi: 'KJSB Agus Purwanto',
+            foto: 'foto-1960.jpg',
+            desa: ['Toman', 'Perhutanian', 'Bromo', 'Tengger', 'Senden', 'Sukodono', 
+                   'Lumajang', 'Tangkul', 'Rowokangkung', 'Pasirian', 'Tempeh', 
+                   'Yosowilangun', 'Kebonsari', 'Kencong', 'Gumukmas', 'Puger', 'Puter']
+        }
+    };
 
-        // Tampilkan pesan error di caption
-        const caption = document.getElementById('fotoCaption');
+    // ============================================================
+    // RENDER
+    // ============================================================
+
+    let tahunAktif = 2025;
+    const semuaTahun = Object.keys(dataPekerjaan).map(Number).sort((a, b) => b - a);
+
+    function renderTombolTahun() {
+        const container = document.getElementById('tahunFilter');
+        container.innerHTML = '';
+        semuaTahun.forEach(tahun => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-tahun' + (tahun === tahunAktif ? ' active' : '');
+            btn.textContent = tahun;
+            btn.dataset.tahun = tahun;
+            btn.onclick = () => {
+                tahunAktif = tahun;
+                renderTombolTahun();
+                renderPekerjaan(tahun);
+            };
+            container.appendChild(btn);
+        });
+    }
+
+    function renderPekerjaan(tahun) {
+        const data = dataPekerjaan[tahun];
+        if (!data) {
+            document.getElementById('pekerjaanContainer').innerHTML = '<p style="color:red;">Data tidak ditemukan</p>';
+            return;
+        }
+
+        const container = document.getElementById('pekerjaanContainer');
+
+        let html = '';
+
+        html += `
+            <div class="pekerjaan-detail">
+                <div class="item"><span class="label">📅 Tahun</span><br><span class="value">${data.tahun}</span></div>
+                <div class="item"><span class="label">📋 Pekerjaan</span><br><span class="value">${data.pekerjaan}</span></div>
+                <div class="item"><span class="label">📂 Kategori</span><br><span class="value">${data.kategori}</span></div>
+                <div class="item"><span class="label">📍 Lokasi</span><br><span class="value">${data.lokasi}</span></div>
+                <div class="item full"><span class="label">🏢 Instansi</span><br><span class="value">${data.instansi}</span></div>
+            </div>
+        `;
+
+        html += `
+            <div class="lokasi-section">
+                <h3>📍 Wilayah Pekerjaan</h3>
+                <div class="lokasi-tags">
+                    ${data.desa.map(d => `<span class="lokasi-tag">${d}</span>`).join('')}
+                </div>
+            </div>
+        `;
+
+        // ⭐ Pastikan path foto benar, gunakan encodeURIComponent untuk spasi ⭐
+        const fotoPath = encodeURIComponent(data.foto);
+
+        html += `
+            <div class="foto-wrapper">
+                <img 
+                    id="fotoPekerjaan"
+                    src="${fotoPath}" 
+                    alt="Foto Pekerjaan - ${data.pekerjaan} ${data.tahun}"
+                    onerror="handleFotoError(this, ${data.tahun})"
+                />
+                <div class="foto-caption" id="fotoCaption_${data.tahun}">
+                    <span>📷 <strong>Foto Pekerjaan</strong> — ${data.pekerjaan} (${data.tahun})</span>
+                    <span id="statusFoto_${data.tahun}" style="font-size:13px;">
+                        <span class="status-success">✅ Foto ditemukan</span>
+                    </span>
+                </div>
+            </div>
+            <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;">
+                <button class="btn-refresh" onclick="refreshFoto(${data.tahun})">🔄 Coba Muat Ulang</button>
+            </div>
+        `;
+
+        container.innerHTML = html;
+    }
+
+    function handleFotoError(img, tahun) {
+        const data = dataPekerjaan[tahun];
+        if (!data) return;
+
+        const fotoPath = encodeURIComponent(data.foto);
+
+        img.src = `https://via.placeholder.com/800x400/2c3e50/ffffff?text=FOTO+TIDAK+TERSEDIA+(${tahun})%0A${encodeURIComponent(data.foto)}`;
+        img.alt = `Foto tidak tersedia untuk tahun ${tahun}`;
+
+        const statusEl = document.getElementById(`statusFoto_${tahun}`);
+        if (statusEl) {
+            statusEl.innerHTML = `<span class="status-error">❌ Gagal memuat foto (Cek file: ${data.foto})</span>`;
+        }
+
+        const caption = document.getElementById(`fotoCaption_${tahun}`);
         if (caption) {
-            caption.innerHTML = '⚠️ <span class="status-error">Gagal memuat foto (Cek ID)</span> — Pastikan file foto ada di folder yang sama';
+            const span = caption.querySelector('span:first-child');
+            if (span) {
+                span.innerHTML = `📷 <strong>Foto Pekerjaan</strong> — ${data.pekerjaan} (${tahun}) ⚠️ <span class="status-error">File tidak ditemukan</span>`;
+            }
         }
-
-        // Jika masih gagal, pakai placeholder eksternal
-        img.onerror = function() {
-            this.src = 'https://via.placeholder.com/800x400/1a5276/ffffff?text=FOTO+TIDAK+TERSEDIA';
-            this.alt = 'Foto tidak tersedia';
-        };
     }
 
-    // Fungsi refresh untuk mencoba memuat ulang foto
-    function refreshFoto() {
+    function refreshFoto(tahun) {
+        const data = dataPekerjaan[tahun];
+        if (!data) return;
+
         const img = document.getElementById('fotoPekerjaan');
-        const caption = document.getElementById('fotoCaption');
+        if (img) {
+            const fotoPath = encodeURIComponent(data.foto);
+            img.src = fotoPath;
+            img.alt = `Foto Pekerjaan - ${data.pekerjaan} ${tahun}`;
+            img.onerror = () => handleFotoError(img, tahun);
+        }
 
-        // Reset ke nama file awal
-        img.src = 'foto-malang-2025.jpg';
-        img.alt = 'Foto Pekerjaan - Peta Foto Tegak Malang';
+        const statusEl = document.getElementById(`statusFoto_${tahun}`);
+        if (statusEl) {
+            statusEl.innerHTML = `<span class="status-success">🔄 Memuat ulang...</span>`;
+        }
 
-        // Reset caption
-        caption.innerHTML = '📷 <strong>Foto Pekerjaan</strong> — Peta Foto Tegak Kabupaten Malang';
-
-        // Trigger ulang onerror jika masih gagal
-        img.onerror = function() {
-            handleFotoError(this);
-        };
+        const caption = document.getElementById(`fotoCaption_${tahun}`);
+        if (caption) {
+            const span = caption.querySelector('span:first-child');
+            if (span) {
+                span.innerHTML = `📷 <strong>Foto Pekerjaan</strong> — ${data.pekerjaan} (${tahun})`;
+            }
+        }
     }
 
-    // Cek otomatis saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', function() {
-        const img = document.getElementById('fotoPekerjaan');
-        // Jika gambar sudah gagal dimuat dari awal
-        if (!img.complete || img.naturalWidth === 0) {
-            handleFotoError(img);
-        }
-    });
+    renderTombolTahun();
+    renderPekerjaan(tahunAktif);
 </script>
 
 </body>
