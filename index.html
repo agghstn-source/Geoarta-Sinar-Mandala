@@ -220,6 +220,24 @@
             background: #0f2a42;
         }
 
+        .upload-hint {
+            background: #fef9e7;
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid #f9e79f;
+            margin-top: 12px;
+            font-size: 13px;
+            color: #7d6608;
+        }
+
+        .upload-hint code {
+            background: #fef9e7;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            color: #1a3c5e;
+        }
+
         .footer {
             margin-top: 30px;
             padding-top: 18px;
@@ -308,7 +326,7 @@
         </div>
 
         <!-- ====== FOTO ====== -->
-        <!-- ⭐ SUDAH DISESUAIKAN DENGAN NAMA FILE FOTO KAMU ⭐ -->
+        <!-- ⭐ PAKAI NAMA FILE YANG SUDAH ADA ⭐ -->
         <div class="foto-wrapper">
             <img 
                 id="fotoPekerjaan"
@@ -328,6 +346,13 @@
             <button class="btn-refresh" onclick="refreshFoto()">🔄 Coba Muat Ulang Foto</button>
         </div>
 
+        <!-- PETUNJUK -->
+        <div class="upload-hint">
+            💡 <strong>Jika foto gagal dimuat:</strong> Pastikan file foto dengan nama 
+            <code>pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png</code> 
+            sudah di-upload ke folder yang sama dengan file ini.
+        </div>
+
         <div class="footer">
             © 2026 PT Geoarta Sinar Mandala · Data Pengalaman Pekerjaan 2020-2025
         </div>
@@ -336,19 +361,15 @@
 </div>
 
 <script>
-    // Fungsi handle error jika foto gagal dimuat
     function handleFotoError(img) {
-        // Ganti dengan placeholder
-        img.src = 'https://via.placeholder.com/800x400/2c3e50/ffffff?text=FOTO+TIDAK+TERSEDIA%0A(pembuatan+Peta+Foto+Tegak+di+Kabupaten+Malang+2025.png)';
+        img.src = 'https://via.placeholder.com/800x400/2c3e50/ffffff?text=FOTO+TIDAK+TERSEDIA';
         img.alt = 'Foto tidak tersedia';
 
-        // Update status
         const statusEl = document.getElementById('statusFoto');
         if (statusEl) {
             statusEl.innerHTML = '<span class="status-error">❌ Gagal memuat foto (Cek: pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png)</span>';
         }
 
-        // Update caption
         const caption = document.getElementById('fotoCaption');
         if (caption) {
             const span = caption.querySelector('span:first-child');
@@ -357,28 +378,23 @@
             }
         }
 
-        // Jika masih gagal, pakai placeholder eksternal
         img.onerror = function() {
             this.src = 'https://via.placeholder.com/800x400/1a5276/ffffff?text=FOTO+TIDAK+TERSEDIA';
         };
     }
 
-    // Fungsi refresh untuk mencoba memuat ulang foto
     function refreshFoto() {
         const img = document.getElementById('fotoPekerjaan');
         const statusEl = document.getElementById('statusFoto');
         const caption = document.getElementById('fotoCaption');
 
-        // Reset ke nama file awal
         img.src = 'pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png';
         img.alt = 'Pembuatan Peta Foto Tegak di Kabupaten Malang 2025';
 
-        // Reset status
         if (statusEl) {
             statusEl.innerHTML = '<span class="status-success">🔄 Memuat ulang...</span>';
         }
 
-        // Reset caption
         if (caption) {
             const span = caption.querySelector('span:first-child');
             if (span) {
@@ -386,16 +402,13 @@
             }
         }
 
-        // Trigger ulang onerror jika masih gagal
         img.onerror = function() {
             handleFotoError(this);
         };
     }
 
-    // Cek otomatis saat halaman dimuat
     document.addEventListener('DOMContentLoaded', function() {
         const img = document.getElementById('fotoPekerjaan');
-        // Jika gambar sudah gagal dimuat dari awal
         if (!img.complete || img.naturalWidth === 0) {
             handleFotoError(img);
         }
