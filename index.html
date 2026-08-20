@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PT Geoarta Sinar Mandala</title>
+    <title>Geoarta Sinar Mandala - Peta Foto Tegak</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #eef2f7;
+            background: #f0f2f5;
             padding: 20px;
         }
 
@@ -22,239 +22,123 @@
             margin: 0 auto;
             background: white;
             border-radius: 16px;
-            overflow: hidden;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
 
-        .header {
-            background: linear-gradient(135deg, #1a3c5e, #2a5f7a);
-            color: white;
-            padding: 30px 35px;
+        h1 {
             text-align: center;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            letter-spacing: 1px;
-        }
-
-        .header h1 span {
-            color: #f1c40f;
-        }
-
-        .header p {
-            font-size: 15px;
-            opacity: 0.9;
-            margin-top: 6px;
-        }
-
-        .legenda {
-            background: #f8fafc;
-            padding: 16px 25px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px 28px;
-            border-bottom: 2px solid #e9edf2;
-        }
-
-        .legenda-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #333;
-        }
-
-        .legenda-item .dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 4px;
-            flex-shrink: 0;
-        }
-
-        .dot-topografi { background: #3498db; }
-        .dot-fotogrametri { background: #27ae60; }
-        .dot-batimetri { background: #e74c3c; }
-        .dot-geodetik { background: #f39c12; }
-        .dot-spasial { background: #8e44ad; }
-
-        .content {
-            padding: 25px 30px 35px;
-        }
-
-        .info-card {
-            background: #f0f4f8;
-            padding: 16px 20px;
-            border-radius: 10px;
-            border-left: 4px solid #1a3c5e;
-            margin-bottom: 20px;
-        }
-
-        .info-card h3 {
             color: #1a3c5e;
-            font-size: 15px;
-        }
-
-        .info-card p {
-            color: #555;
-            font-size: 14px;
-            margin-top: 4px;
-        }
-
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px 30px;
-            background: #f8fafc;
-            padding: 18px 22px;
-            border-radius: 10px;
-            border-left: 5px solid #27ae60;
-            margin-bottom: 20px;
-        }
-
-        .detail-grid .item {
-            padding: 4px 0;
-        }
-
-        .detail-grid .label {
-            font-weight: 600;
-            color: #2c3e50;
-            font-size: 13px;
-        }
-
-        .detail-grid .value {
-            color: #1a3c5e;
-            font-size: 15px;
-        }
-
-        .detail-grid .full {
-            grid-column: 1 / -1;
-        }
-
-        .lokasi-section {
-            margin: 18px 0 20px;
-        }
-
-        .lokasi-section h3 {
-            color: #1a3c5e;
-            font-size: 15px;
             margin-bottom: 10px;
+            font-size: 28px;
         }
 
-        .lokasi-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 16px;
         }
 
-        .lokasi-tag {
-            background: #eef3f7;
-            padding: 5px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            color: #2c3e50;
-            border: 1px solid #dce4ec;
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
         }
 
-        .lokasi-tag:hover {
-            background: #dce4ec;
-        }
-
-        .foto-wrapper {
-            margin: 20px 0 10px;
+        .photo-card {
+            background: #fafafa;
             border-radius: 12px;
             overflow: hidden;
-            background: #f8f9fa;
-            border: 1px solid #e9edf2;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: transform 0.2s ease;
         }
 
-        .foto-wrapper img {
+        .photo-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            background: #e9ecef;
+        }
+
+        .photo-card .caption {
+            padding: 14px 18px;
+            font-size: 14px;
+            color: #333;
+            background: white;
+        }
+
+        .photo-card .caption strong {
+            display: block;
+            font-size: 16px;
+            color: #1a3c5e;
+            margin-bottom: 4px;
+        }
+
+        .photo-card .caption small {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .featured-photo {
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .featured-photo img {
             width: 100%;
             max-height: 500px;
             object-fit: contain;
-            background: #f0f2f5;
-            display: block;
-        }
-
-        .foto-caption {
-            padding: 12px 18px;
             background: #f8f9fa;
-            font-size: 14px;
-            color: #555;
-            border-top: 1px solid #e9edf2;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
         }
 
-        .status-error {
-            color: #e74c3c;
-            font-weight: 600;
-        }
-
-        .status-success {
-            color: #27ae60;
-            font-weight: 600;
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-
-        .btn-refresh {
-            padding: 8px 20px;
+        .featured-photo .caption {
+            padding: 16px 20px;
             background: #1a3c5e;
             color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background 0.2s;
+            font-size: 15px;
         }
 
-        .btn-refresh:hover {
-            background: #0f2a42;
+        .info-box {
+            background: #e8f0fe;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #1a3c5e;
         }
 
-        .upload-hint {
-            background: #fef9e7;
-            padding: 12px 18px;
-            border-radius: 8px;
-            border: 1px solid #f9e79f;
-            margin-top: 12px;
-            font-size: 13px;
-            color: #7d6608;
-        }
-
-        .upload-hint code {
-            background: #fef9e7;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
+        .info-box h3 {
             color: #1a3c5e;
+            margin-bottom: 6px;
+        }
+
+        .info-box p {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6;
         }
 
         .footer {
-            margin-top: 30px;
-            padding-top: 18px;
-            border-top: 1px solid #e9edf2;
             text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #777;
             font-size: 13px;
-            color: #888;
         }
 
-        @media (max-width: 700px) {
-            .detail-grid {
-                grid-template-columns: 1fr;
-                gap: 4px;
-            }
-            .header { padding: 20px; }
-            .content { padding: 16px; }
-            .header h1 { font-size: 22px; }
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            h1 { font-size: 22px; }
+            .photo-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -262,158 +146,110 @@
 
 <div class="container">
 
-    <!-- HEADER -->
-    <div class="header">
-        <h1>PT Geoarta <span>Sinar Mandala</span></h1>
-        <p>🗺️ Peta Persebaran Pengalaman Pekerjaan (2020 - 2025)</p>
+    <h1>🗺️ Geoarta Sinar Mandala</h1>
+    <p class="subtitle">Pemetaan Foto Tegak · Kabupaten Malang · Gumuk Pasir</p>
+
+    <!-- Info Proyek -->
+    <div class="info-box">
+        <h3>📌 Tentang Proyek</h3>
+        <p>
+            Proyek ini menampilkan dokumentasi foto tegak untuk pemetaan wilayah 
+            <strong>Kabupaten Malang</strong>, termasuk pengukuran titik zona inti 
+            di <strong>Gumuk Pasir</strong> serta kawasan sekitarnya.
+        </p>
     </div>
 
-    <!-- LEGENDA -->
-    <div class="legenda">
-        <span class="legenda-item"><span class="dot dot-topografi"></span> Pengukuran Topografi</span>
-        <span class="legenda-item"><span class="dot dot-fotogrametri"></span> Pengukuran Fotogrametri</span>
-        <span class="legenda-item"><span class="dot dot-batimetri"></span> Pengukuran Batimetri</span>
-        <span class="legenda-item"><span class="dot dot-geodetik"></span> Pengukuran BM / Kontrol Geodetik</span>
-        <span class="legenda-item"><span class="dot dot-spasial"></span> Pengolahan Data Spasial</span>
+    <!-- ====== FOTO UTAMA / FEATURED ====== -->
+    <!-- Ganti src dengan path foto kamu -->
+    <div class="featured-photo">
+        <img 
+            src="foto-malang.jpg" 
+            alt="Foto Tegak Malang"
+            onerror="this.src='https://via.placeholder.com/800x400?text=Foto+Malang'"
+        />
+        <div class="caption">
+            📷 <strong>Foto Tegak — Kabupaten Malang</strong> 
+            <span style="float:right;">Dokumentasi lapangan</span>
+        </div>
     </div>
 
-    <!-- KONTEN -->
-    <div class="content">
+    <!-- ====== GALERI FOTO ====== -->
+    <h2 style="margin: 30px 0 16px; color: #1a3c5e;">📸 Galeri Foto</h2>
 
-        <!-- INFO -->
-        <div class="info-card">
-            <h3>📌 Proyek Peta Foto Tegak</h3>
-            <p>Pemetaan dan pengukuran titik zona inti di berbagai wilayah Asia Tenggara.</p>
-        </div>
+    <div class="photo-grid">
 
-        <!-- DETAIL PEKERJAAN -->
-        <div class="detail-grid">
-            <div class="item"><span class="label">📅 Tahun</span><br><span class="value">2025</span></div>
-            <div class="item"><span class="label">📋 Pekerjaan</span><br><span class="value">Pembuatan Peta Foto Tegak</span></div>
-            <div class="item"><span class="label">📂 Kategori</span><br><span class="value">Pengukuran Fotogrametri</span></div>
-            <div class="item"><span class="label">📍 Lokasi</span><br><span class="value">Kabupaten Malang</span></div>
-            <div class="item full"><span class="label">🏢 Instansi</span><br><span class="value">KJSB Agus Purwanto</span></div>
-        </div>
-
-        <!-- LOKASI -->
-        <div class="lokasi-section">
-            <h3>📍 Wilayah Pekerjaan</h3>
-            <div class="lokasi-tags">
-                <span class="lokasi-tag">🇻🇳 Hồ Chí Minh</span>
-                <span class="lokasi-tag">🇻🇳 Cà Mau</span>
-                <span class="lokasi-tag">🇲🇾 Kangar</span>
-                <span class="lokasi-tag">🇲🇾 George Town</span>
-                <span class="lokasi-tag">🇲🇾 Ipoh</span>
-                <span class="lokasi-tag">🇲🇾 Kuantan</span>
-                <span class="lokasi-tag">🇮🇩 Sumatera Utara</span>
-                <span class="lokasi-tag">🇮🇩 Banda Aceh</span>
-                <span class="lokasi-tag">🇮🇩 Medan</span>
-                <span class="lokasi-tag">🇲🇾 Kuala Lumpur</span>
-                <span class="lokasi-tag">🇮🇩 Sumatera Barat</span>
-                <span class="lokasi-tag">🇮🇩 Jambi</span>
-                <span class="lokasi-tag">🇮🇩 Riau</span>
-                <span class="lokasi-tag">🇮🇩 Tanjungpinang</span>
-                <span class="lokasi-tag">🇮🇩 Sumatera Selatan</span>
-                <span class="lokasi-tag">🇮🇩 Batam</span>
-                <span class="lokasi-tag">🇮🇩 Bengkulu</span>
-                <span class="lokasi-tag">🇮🇩 Bangka Belitung</span>
-                <span class="lokasi-tag">🇹🇱 Timor Timur</span>
-                <span class="lokasi-tag">🇹🇱 Timor Leste</span>
-                <span class="lokasi-tag">🇮🇩 Maluku</span>
-                <span class="lokasi-tag">🇮🇩 Papua Barat</span>
-                <span class="lokasi-tag">🇮🇩 Papua</span>
-            </div>
-        </div>
-
-        <!-- ====== FOTO ====== -->
-        <!-- ⭐ PAKAI NAMA FILE YANG SUDAH ADA ⭐ -->
-        <div class="foto-wrapper">
+        <!-- Kartu Foto 1 -->
+        <div class="photo-card">
             <img 
-                id="fotoPekerjaan"
-                src="pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png" 
-                alt="Pembuatan Peta Foto Tegak di Kabupaten Malang 2025"
-                onerror="handleFotoError(this)"
+                src="foto-malang-1.jpg" 
+                alt="Foto Malang 1"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Foto+1'"
             />
-            <div class="foto-caption" id="fotoCaption">
-                <span>📷 <strong>Foto Pekerjaan</strong> — Pembuatan Peta Foto Tegak di Kabupaten Malang (2025)</span>
-                <span id="statusFoto">
-                    <span class="status-success">✅ Foto ditemukan</span>
-                </span>
+            <div class="caption">
+                <strong>Pemetaan Wilayah</strong>
+                Pengambilan data titik koordinat
+                <small>· Kab. Malang</small>
             </div>
         </div>
 
-        <div class="btn-group">
-            <button class="btn-refresh" onclick="refreshFoto()">🔄 Coba Muat Ulang Foto</button>
+        <!-- Kartu Foto 2 -->
+        <div class="photo-card">
+            <img 
+                src="foto-gumuk-pasir.jpg" 
+                alt="Gumuk Pasir"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Gumuk+Pasir'"
+            />
+            <div class="caption">
+                <strong>Gumuk Pasir</strong>
+                Pengukuran zona inti
+                <small>· Parangtritis</small>
+            </div>
         </div>
 
-        <!-- PETUNJUK -->
-        <div class="upload-hint">
-            💡 <strong>Jika foto gagal dimuat:</strong> Pastikan file foto dengan nama 
-            <code>pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png</code> 
-            sudah di-upload ke folder yang sama dengan file ini.
+        <!-- Kartu Foto 3 -->
+        <div class="photo-card">
+            <img 
+                src="foto-malang-2.jpg" 
+                alt="Foto Malang 2"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Foto+2'"
+            />
+            <div class="caption">
+                <strong>Dokumentasi Lapangan</strong>
+                Tim survei di lokasi
+                <small>· Kab. Malang</small>
+            </div>
         </div>
 
-        <div class="footer">
-            © 2026 PT Geoarta Sinar Mandala · Data Pengalaman Pekerjaan 2020-2025
+        <!-- Kartu Foto 4 (tambahan) -->
+        <div class="photo-card">
+            <img 
+                src="foto-zona-inti.jpg" 
+                alt="Zona Inti"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Zona+Inti'"
+            />
+            <div class="caption">
+                <strong>Titik Zona Inti</strong>
+                Pengukuran dengan alat GPS
+                <small>· Gumuk Pasir</small>
+            </div>
         </div>
+
+    </div>
+
+    <!-- Info tambahan -->
+    <div class="info-box" style="background:#fef9e7; border-left-color:#f39c12;">
+        <h3>📍 Lokasi Pengukuran</h3>
+        <p>
+            <strong>Kabupaten Malang</strong> — Gumuk Pasir, zona inti, 
+            dan area pesisir selatan Jawa Timur.
+        </p>
+    </div>
+
+    <div class="footer">
+        © 2026 Geoarta Sinar Mandala · Dibuat dengan ❤️ untuk pemetaan wilayah
     </div>
 
 </div>
-
-<script>
-    function handleFotoError(img) {
-        img.src = 'https://via.placeholder.com/800x400/2c3e50/ffffff?text=FOTO+TIDAK+TERSEDIA';
-        img.alt = 'Foto tidak tersedia';
-
-        const statusEl = document.getElementById('statusFoto');
-        if (statusEl) {
-            statusEl.innerHTML = '<span class="status-error">❌ Gagal memuat foto (Cek: pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png)</span>';
-        }
-
-        const caption = document.getElementById('fotoCaption');
-        if (caption) {
-            const span = caption.querySelector('span:first-child');
-            if (span) {
-                span.innerHTML = '📷 <strong>Foto Pekerjaan</strong> — ⚠️ <span class="status-error">File tidak ditemukan</span>';
-            }
-        }
-
-        img.onerror = function() {
-            this.src = 'https://via.placeholder.com/800x400/1a5276/ffffff?text=FOTO+TIDAK+TERSEDIA';
-        };
-    }
-
-    function refreshFoto() {
-        const img = document.getElementById('fotoPekerjaan');
-        const statusEl = document.getElementById('statusFoto');
-        const caption = document.getElementById('fotoCaption');
-
-        img.src = 'pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png';
-        img.alt = 'Pembuatan Peta Foto Tegak di Kabupaten Malang 2025';
-
-        if (statusEl) {
-            statusEl.innerHTML = '<span class="status-success">🔄 Memuat ulang...</span>';
-        }
-
-        if (caption) {
-            const span = caption.querySelector('span:first-child');
-            if (span) {
-                span.innerHTML = '📷 <strong>Foto Pekerjaan</strong> — Pembuatan Peta Foto Tegak di Kabupaten Malang (2025)';
-            }
-        }
-
-        img.onerror = function() {
-            handleFotoError(this);
-        };
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const img = document.getElementById('fotoPekerjaan');
-        if (!img.complete || img.naturalWidth === 0) {
-            handleFotoError(img);
-        }
-    });
-</script>
 
 </body>
 </html>
