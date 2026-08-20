@@ -101,7 +101,36 @@
             margin-top: 4px;
         }
 
-        /* LOKASI TAGS */
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 30px;
+            background: #f8fafc;
+            padding: 18px 22px;
+            border-radius: 10px;
+            border-left: 5px solid #27ae60;
+            margin-bottom: 20px;
+        }
+
+        .detail-grid .item {
+            padding: 4px 0;
+        }
+
+        .detail-grid .label {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        .detail-grid .value {
+            color: #1a3c5e;
+            font-size: 15px;
+        }
+
+        .detail-grid .full {
+            grid-column: 1 / -1;
+        }
+
         .lokasi-section {
             margin: 18px 0 20px;
         }
@@ -131,7 +160,6 @@
             background: #dce4ec;
         }
 
-        /* FOTO */
         .foto-wrapper {
             margin: 20px 0 10px;
             border-radius: 12px;
@@ -142,7 +170,7 @@
 
         .foto-wrapper img {
             width: 100%;
-            max-height: 450px;
+            max-height: 500px;
             object-fit: contain;
             background: #f0f2f5;
             display: block;
@@ -192,40 +220,6 @@
             background: #0f2a42;
         }
 
-        .btn-upload {
-            padding: 8px 20px;
-            background: #27ae60;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 13px;
-            cursor: pointer;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-upload:hover {
-            background: #1e8449;
-        }
-
-        .upload-hint {
-            background: #fef9e7;
-            padding: 12px 18px;
-            border-radius: 8px;
-            border: 1px solid #f9e79f;
-            margin-top: 12px;
-            font-size: 13px;
-            color: #7d6608;
-        }
-
-        .upload-hint code {
-            background: #fef9e7;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 600;
-            color: #1a3c5e;
-        }
-
         .footer {
             margin-top: 30px;
             padding-top: 18px;
@@ -236,6 +230,10 @@
         }
 
         @media (max-width: 700px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+                gap: 4px;
+            }
             .header { padding: 20px; }
             .content { padding: 16px; }
             .header h1 { font-size: 22px; }
@@ -270,6 +268,15 @@
             <p>Pemetaan dan pengukuran titik zona inti di berbagai wilayah Asia Tenggara.</p>
         </div>
 
+        <!-- DETAIL PEKERJAAN -->
+        <div class="detail-grid">
+            <div class="item"><span class="label">📅 Tahun</span><br><span class="value">2025</span></div>
+            <div class="item"><span class="label">📋 Pekerjaan</span><br><span class="value">Pembuatan Peta Foto Tegak</span></div>
+            <div class="item"><span class="label">📂 Kategori</span><br><span class="value">Pengukuran Fotogrametri</span></div>
+            <div class="item"><span class="label">📍 Lokasi</span><br><span class="value">Kabupaten Malang</span></div>
+            <div class="item full"><span class="label">🏢 Instansi</span><br><span class="value">KJSB Agus Purwanto</span></div>
+        </div>
+
         <!-- LOKASI -->
         <div class="lokasi-section">
             <h3>📍 Wilayah Pekerjaan</h3>
@@ -301,16 +308,16 @@
         </div>
 
         <!-- ====== FOTO ====== -->
-        <!-- ⭐ GANTI src dengan nama file foto kamu yang sebenarnya ⭐ -->
+        <!-- ⭐ SUDAH DISESUAIKAN DENGAN NAMA FILE FOTO KAMU ⭐ -->
         <div class="foto-wrapper">
             <img 
                 id="fotoPekerjaan"
-                src="foto-pekerjaan.jpg" 
-                alt="Foto Pekerjaan"
+                src="pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png" 
+                alt="Pembuatan Peta Foto Tegak di Kabupaten Malang 2025"
                 onerror="handleFotoError(this)"
             />
             <div class="foto-caption" id="fotoCaption">
-                <span>📷 <strong>Foto Pekerjaan</strong> — Dokumentasi Lapangan</span>
+                <span>📷 <strong>Foto Pekerjaan</strong> — Pembuatan Peta Foto Tegak di Kabupaten Malang (2025)</span>
                 <span id="statusFoto">
                     <span class="status-success">✅ Foto ditemukan</span>
                 </span>
@@ -318,15 +325,7 @@
         </div>
 
         <div class="btn-group">
-            <button class="btn-refresh" onclick="refreshFoto()">🔄 Coba Muat Ulang</button>
-        </div>
-
-        <!-- PETUNJUK UPLOAD -->
-        <div class="upload-hint">
-            💡 <strong>Jika foto gagal dimuat:</strong> Upload file foto dengan nama 
-            <code>foto-pekerjaan.jpg</code> ke folder yang sama dengan file ini.
-            <br>
-            <span style="font-size:12px; color:#888;">Atau ganti nama file di kode (bagian src="...") sesuai dengan nama file foto kamu.</span>
+            <button class="btn-refresh" onclick="refreshFoto()">🔄 Coba Muat Ulang Foto</button>
         </div>
 
         <div class="footer">
@@ -340,13 +339,13 @@
     // Fungsi handle error jika foto gagal dimuat
     function handleFotoError(img) {
         // Ganti dengan placeholder
-        img.src = 'https://via.placeholder.com/800x400/2c3e50/ffffff?text=FOTO+TIDAK+TERSEDIA';
+        img.src = 'https://via.placeholder.com/800x400/2c3e50/ffffff?text=FOTO+TIDAK+TERSEDIA%0A(pembuatan+Peta+Foto+Tegak+di+Kabupaten+Malang+2025.png)';
         img.alt = 'Foto tidak tersedia';
 
         // Update status
         const statusEl = document.getElementById('statusFoto');
         if (statusEl) {
-            statusEl.innerHTML = '<span class="status-error">❌ Gagal memuat foto (Cek ID / nama file)</span>';
+            statusEl.innerHTML = '<span class="status-error">❌ Gagal memuat foto (Cek: pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png)</span>';
         }
 
         // Update caption
@@ -371,8 +370,8 @@
         const caption = document.getElementById('fotoCaption');
 
         // Reset ke nama file awal
-        img.src = 'foto-pekerjaan.jpg';
-        img.alt = 'Foto Pekerjaan - Dokumentasi Lapangan';
+        img.src = 'pembuatan Peta Foto Tegak di Kabupaten Malang 2025.png';
+        img.alt = 'Pembuatan Peta Foto Tegak di Kabupaten Malang 2025';
 
         // Reset status
         if (statusEl) {
@@ -383,7 +382,7 @@
         if (caption) {
             const span = caption.querySelector('span:first-child');
             if (span) {
-                span.innerHTML = '📷 <strong>Foto Pekerjaan</strong> — Dokumentasi Lapangan';
+                span.innerHTML = '📷 <strong>Foto Pekerjaan</strong> — Pembuatan Peta Foto Tegak di Kabupaten Malang (2025)';
             }
         }
 
