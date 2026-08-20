@@ -1,383 +1,255 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web GIS - Pengalaman Kerja PT Geoarta Sinar Mandala</title>
-    
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Geoarta Sinar Mandala - Peta Foto Tegak</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
-        header {
-            background-color: #1a365d;
-            color: white;
-            padding: 15px 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            z-index: 1000;
-        }
-        header h1 {
-            font-size: 1.4rem;
-            margin-bottom: 4px;
-        }
-        header p {
-            font-size: 0.85rem;
-            color: #cbd5e0;
-        }
-        #map {
-            flex: 1;
-            width: 100%;
-            z-index: 1;
-        }
-        
-        /* Popup Styling */
-        .leaflet-popup-content-wrapper {
-            border-radius: 8px;
-            padding: 5px;
-        }
-        .popup-card {
-            width: 250px;
-        }
-        .popup-card h3 {
-            color: #2b6cb0;
-            font-size: 1rem;
-            margin-bottom: 6px;
-            border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 4px;
-        }
-        .popup-info {
-            font-size: 0.85rem;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-        .popup-info strong {
-            color: #4a5568;
-        }
-        .popup-img-container {
-            width: 100%;
-            height: 140px;
-            background-color: #edf2f7;
-            border-radius: 6px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px dashed #cbd5e0;
-        }
-        .popup-img-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .img-placeholder {
-            font-size: 0.75rem;
-            color: #718096;
-            text-align: center;
-            padding: 10px;
-        }
-        .badge-year {
-            display: inline-block;
-            background-color: #3182ce;
-            color: white;
-            font-size: 0.7rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-bottom: 6px;
+            box-sizing: border-box;
         }
 
-        /* Custom SVG Pin Marker Styling */
-        .custom-pin-icon {
-            background: transparent;
-            border: none;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            padding: 20px;
         }
-        .pin-svg {
-            filter: drop-shadow(0px 3px 4px rgba(0,0,0,0.4));
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a3c5e;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 30px 0;
+        }
+
+        .photo-card {
+            background: #fafafa;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
             transition: transform 0.2s ease;
         }
-        .pin-svg:hover {
-            transform: scale(1.15);
+
+        .photo-card:hover {
+            transform: translateY(-4px);
         }
 
-        /* Legenda Styling (Kanan Atas) */
-        .legend {
-            background: white;
-            padding: 12px 15px;
-            line-height: 20px;
+        .photo-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+            background: #e9ecef;
+        }
+
+        .photo-card .caption {
+            padding: 14px 18px;
+            font-size: 14px;
             color: #333;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            font-size: 0.82rem;
+            background: white;
         }
-        .legend h4 {
-            margin: 0 0 8px 0;
-            font-size: 0.9rem;
-            color: #1a365d;
-            border-bottom: 1px solid #ddd;
-            padding-bottom: 4px;
+
+        .photo-card .caption strong {
+            display: block;
+            font-size: 16px;
+            color: #1a3c5e;
+            margin-bottom: 4px;
         }
-        .legend-item {
-            display: flex;
-            align-items: center;
+
+        .photo-card .caption small {
+            color: #777;
+            font-size: 12px;
+        }
+
+        .featured-photo {
+            margin: 30px 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        .featured-photo img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: contain;
+            background: #f8f9fa;
+        }
+
+        .featured-photo .caption {
+            padding: 16px 20px;
+            background: #1a3c5e;
+            color: white;
+            font-size: 15px;
+        }
+
+        .info-box {
+            background: #e8f0fe;
+            padding: 16px 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border-left: 4px solid #1a3c5e;
+        }
+
+        .info-box h3 {
+            color: #1a3c5e;
             margin-bottom: 6px;
         }
-        .legend-item:last-child {
-            margin-bottom: 0;
+
+        .info-box p {
+            color: #333;
+            font-size: 14px;
+            line-height: 1.6;
         }
-        .legend-pin-icon {
-            width: 16px;
-            height: 20px;
-            margin-right: 8px;
-            display: inline-block;
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #777;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 16px; }
+            h1 { font-size: 22px; }
+            .photo-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>PT Geoarta Sinar Mandala</h1>
-        <p>Peta Persebaran Pengalaman Pekerjaan (2020 - 2025)</p>
-    </header>
+<div class="container">
 
-    <div id="map"></div>
+    <h1>🗺️ Geoarta Sinar Mandala</h1>
+    <p class="subtitle">Pemetaan Foto Tegak · Kabupaten Malang · Gumuk Pasir</p>
 
-    <!-- Leaflet JS -->
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Info Proyek -->
+    <div class="info-box">
+        <h3>📌 Tentang Proyek</h3>
+        <p>
+            Proyek ini menampilkan dokumentasi foto tegak untuk pemetaan wilayah 
+            <strong>Kabupaten Malang</strong>, termasuk pengukuran titik zona inti 
+            di <strong>Gumuk Pasir</strong> serta kawasan sekitarnya.
+        </p>
+    </div>
 
-    <script>
-        // ============================================================
-        // CARA KERJA: 
-        // Anda hanya perlu mengisi "driveId" pada array dataPengalaman di bawah.
-        // Contoh ID: "1A2B3C4D5E6F7G8H9I0J"
-        // ============================================================
+    <!-- ====== FOTO UTAMA / FEATURED ====== -->
+    <!-- Ganti src dengan path foto kamu -->
+    <div class="featured-photo">
+        <img 
+            src="foto-malang.jpg" 
+            alt="Foto Tegak Malang"
+            onerror="this.src='https://via.placeholder.com/800x400?text=Foto+Malang'"
+        />
+        <div class="caption">
+            📷 <strong>Foto Tegak — Kabupaten Malang</strong> 
+            <span style="float:right;">Dokumentasi lapangan</span>
+        </div>
+    </div>
 
-        // Fungsi untuk mengubah ID Google Drive menjadi URL Gambar yang bisa ditampilkan
-        function getDriveImageUrl(driveId) {
-            if (!driveId || driveId === "") return "";
-            // Format URL publik untuk ditampilkan di tag <img>
-            return `https://drive.google.com/uc?export=view&id=${driveId}`;
-        }
+    <!-- ====== GALERI FOTO ====== -->
+    <h2 style="margin: 30px 0 16px; color: #1a3c5e;">📸 Galeri Foto</h2>
 
-        // Fungsi membuat HTML Foto untuk Popup
-        function makePhotoHTML(item) {
-            const photoUrl = getDriveImageUrl(item.driveId);
+    <div class="photo-grid">
 
-            if (!photoUrl) {
-                return `
-                    <div class="popup-img-container">
-                        <div class="img-placeholder">
-                            🖼️ <i>Foto belum diisi (Isi driveId)</i>
-                        </div>
-                    </div>`;
-            }
+        <!-- Kartu Foto 1 -->
+        <div class="photo-card">
+            <img 
+                src="foto-malang-1.jpg" 
+                alt="Foto Malang 1"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Foto+1'"
+            />
+            <div class="caption">
+                <strong>Pemetaan Wilayah</strong>
+                Pengambilan data titik koordinat
+                <small>· Kab. Malang</small>
+            </div>
+        </div>
 
-            return `
-                <div class="popup-img-container">
-                    <img src="${photoUrl}"
-                         alt="Foto Pekerjaan"
-                         loading="lazy"
-                         onerror="this.parentElement.innerHTML='<div class="img-placeholder">🖼️ <i>Gagal memuat foto (Cek ID)</i></div>'">
-                </div>`;
-        }
+        <!-- Kartu Foto 2 -->
+        <div class="photo-card">
+            <img 
+                src="foto-gumuk-pasir.jpg" 
+                alt="Gumuk Pasir"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Gumuk+Pasir'"
+            />
+            <div class="caption">
+                <strong>Gumuk Pasir</strong>
+                Pengukuran zona inti
+                <small>· Parangtritis</small>
+            </div>
+        </div>
 
-        // Initialize Map centered in Indonesia
-        const map = L.map('map').setView([-2.548926, 118.014863], 5);
+        <!-- Kartu Foto 3 -->
+        <div class="photo-card">
+            <img 
+                src="foto-malang-2.jpg" 
+                alt="Foto Malang 2"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Foto+2'"
+            />
+            <div class="caption">
+                <strong>Dokumentasi Lapangan</strong>
+                Tim survei di lokasi
+                <small>· Kab. Malang</small>
+            </div>
+        </div>
 
-        // OpenStreetMap Layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 18,
-            attribution: '&copy; OpenStreetMap contributors | PT Geoarta Sinar Mandala'
-        }).addTo(map);
+        <!-- Kartu Foto 4 (tambahan) -->
+        <div class="photo-card">
+            <img 
+                src="foto-zona-inti.jpg" 
+                alt="Zona Inti"
+                onerror="this.src='https://via.placeholder.com/300x250?text=Zona+Inti'"
+            />
+            <div class="caption">
+                <strong>Titik Zona Inti</strong>
+                Pengukuran dengan alat GPS
+                <small>· Gumuk Pasir</small>
+            </div>
+        </div>
 
-        // Pemetaan Warna berdasarkan Kategori
-        const colorMap = {
-            "Pengukuran Topografi": "#D2B48C",       // Cokelat Muda (Tanah)
-            "Pengukuran Fotogrametri": "#38BDF8",   // Biru Muda (Langit)
-            "Pengukuran Batimetri": "#1E3A8A",      // Biru Tua (Air)
-            "Pengukuran BM / Kontrol Geodetik": "#8B4513", // Cokelat Tua (Tanah)
-            "Pengolahan Data Spasial": "#4ADE80"    // Hijau Muda (Citra Satelit)
-        };
+    </div>
 
-        // Fungsi penentuan kategori dari nama pekerjaan
-        function getCategory(pekerjaan) {
-            const p = pekerjaan.toLowerCase();
-            if (p.includes('topografi')) return "Pengukuran Topografi";
-            if (p.includes('foto udara') || p.includes('lidar') || p.includes('video') || p.includes('pemotretan udara') || p.includes('peta foto tegak') || p.includes('foto tegak')) return "Pengukuran Fotogrametri";
-            if (p.includes('hidrografi') || p.includes('batimetri') || p.includes('usv')) return "Pengukuran Batimetri";
-            if (p.includes('stake out') || p.includes('stakeout') || p.includes('soil test')) return "Pengukuran BM / Kontrol Geodetik";
-            if (p.includes('lod 1') || p.includes('dem')) return "Pengolahan Data Spasial";
-            
-            return "Pengukuran Topografi"; // Default Fallback
-        }
+    <!-- Info tambahan -->
+    <div class="info-box" style="background:#fef9e7; border-left-color:#f39c12;">
+        <h3>📍 Lokasi Pengukuran</h3>
+        <p>
+            <strong>Kabupaten Malang</strong> — Gumuk Pasir, zona inti, 
+            dan area pesisir selatan Jawa Timur.
+        </p>
+    </div>
 
-        // Fungsi membuat SVG Icon Pin Peta Klasik
-        function createPinIcon(color) {
-            const svgHtml = `
-                <svg class="pin-svg" width="26" height="38" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="${color}" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" 
-                          d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/>
-                    <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/>
-                </svg>
-            `;
-            return L.divIcon({
-                className: 'custom-pin-icon',
-                html: svgHtml,
-                iconSize: [26, 38],
-                iconAnchor: [13, 38],
-                popupAnchor: [0, -34]
-            });
-        }
+    <div class="footer">
+        © 2026 Geoarta Sinar Mandala · Dibuat dengan ❤️ untuk pemetaan wilayah
+    </div>
 
-        // ============================================================
-        // DATA PEKERJAAN
-        // PETUNJUK: GANTI "driveId" dengan ID file foto di Google Drive Anda
-        // Contoh: driveId: "1A2B3C4D5E6F7G8H9I0J"
-        // Biarkan kosong ("") jika belum ada fotonya.
-        // ============================================================
-        const dataPengalaman = [
+</div>
 
-            // --- 2020 ---
-            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Wates, Kulon Progo", instansi: "Rekan", lat: -7.861, lng: 110.158, driveId: "" },
-            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Godean, Sleman", instansi: "Rekan", lat: -7.768, lng: 110.294, driveId: "" },
-            { tahun: 2020, pekerjaan: "Topografi", lokasi: "Bengawan Solo, Sukoharjo", instansi: "Tekling UPN", lat: -7.683, lng: 110.83, driveId: "" },
-            { tahun: 2020, pekerjaan: "Foto Udara", lokasi: "Banyu Urip, Purworejo", instansi: "Rekan", lat: -7.794, lng: 109.972, driveId: "" },
-            { tahun: 2020, pekerjaan: "Video", lokasi: "Nusa Tenggara Barat", instansi: "Dosen Bandung", lat: -8.652, lng: 117.361, driveId: "" },
-
-            // --- 2021 ---
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Tembalang, Semarang", instansi: "BEE HAVE Drone", lat: -7.051, lng: 110.439, driveId: "" },
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Muara Teweh, Kalteng", instansi: "Greenline", lat: -0.957, lng: 114.896, driveId: "" },
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Buhud, Kalteng", instansi: "Rekan", lat: -1.02, lng: 114.6, driveId: "" },
-            { tahun: 2021, pekerjaan: "Build USV", lokasi: "Balai Pantai, Bali", instansi: "PUPR Balai Pantai", lat: -8.683, lng: 115.215, driveId: "" },
-            { tahun: 2021, pekerjaan: "Foto Udara", lokasi: "Pongkor, Bogor", instansi: "ANTAM", lat: -6.662, lng: 106.568, driveId: "" },
-            { tahun: 2021, pekerjaan: "Topografi", lokasi: "Sungai Ciliwung, Jakarta", instansi: "Rekan", lat: -6.229, lng: 106.84, driveId: "" },
-
-            // --- 2022 ---
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Candi Borobudur", instansi: "UGM", lat: -7.607, lng: 110.203, driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Barong, Tongkok, Kutai Barat", instansi: "PT. ASG", lat: -0.226, lng: 115.7, driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Muara Lawa, Kutai Barat", instansi: "PT. ASG", lat: -0.428, lng: 115.824, driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Muara Enim, Sumatera Selatan", instansi: "Rekan", lat: -3.655, lng: 103.774, driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Lawe-lawe, Balikpapan", instansi: "PERTAMINA", lat: -1.312, lng: 116.79, driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Sungai Gajah Wong, Yogyakarta", instansi: "UCY", lat: -7.808, lng: 110.395, driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Samarinda", instansi: "PT. Hexa Internasional", lat: -0.502, lng: 117.153, driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Pacitan, Jawa Timur", instansi: "ITENAS", lat: -8.205, lng: 111.092, driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Pacitan, Jawa Timur", instansi: "ITENAS", lat: -8.19, lng: 111.1, driveId: "" },
-            { tahun: 2022, pekerjaan: "Foto Udara", lokasi: "Pulau Bintan, Tanjung Pinang", instansi: "SANDBOX", lat: 0.917, lng: 104.466, driveId: "" },
-            { tahun: 2022, pekerjaan: "LiDAR", lokasi: "Muara Enim, Sumatera Selatan", instansi: "Rekan", lat: -3.63, lng: 103.78, driveId: "" },
-            { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "ANUGERAH GLOBAL SUPERINTENDING", lat: -10.177, lng: 123.607, driveId: "" },
-            { tahun: 2022, pekerjaan: "Topografi", lokasi: "Kupang, Nusa Tenggara Timur", instansi: "PLTU Kupang", lat: -10.16, lng: 123.59, driveId: "" },
-
-            // --- 2023 ---
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gorontalo Utara", instansi: "SANDBOX", lat: 0.888, lng: 122.88, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Buru, Maluku", instansi: "BPN Buru", lat: -3.328, lng: 127.1, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Maluku", instansi: "BPN Maluku", lat: -3.2, lng: 130.0, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Gunung Mas", lat: -1.05, lng: 113.84, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Jambi", instansi: "PT KBB", lat: -1.61, lng: 103.613, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Pamekasan, Jawa Timur", instansi: "BPN Pamekasan", lat: -7.161, lng: 113.482, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Minggir, Sleman", instansi: "BPN Sleman", lat: -7.731, lng: 110.252, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Cilacap, Jawa Tengah", instansi: "BPN Cilacap", lat: -7.718, lng: 109.015, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Kidul, Yogyakarta", instansi: "BPN Gunung Kidul", lat: -7.962, lng: 110.601, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Lampung Barat", instansi: "BPN Lampung Barat", lat: -5.15, lng: 104.19, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gorontalo", instansi: "BPN Gorontalo", lat: 0.54, lng: 123.06, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Pringsewu, Lampung", instansi: "BPN Lampung", lat: -5.358, lng: 104.974, driveId: "" },
-            { tahun: 2023, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Gunung Mas", lat: -1.07, lng: 113.85, driveId: "" },
-
-            // --- 2024 ---
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Lampung Timur, Lampung", instansi: "BPN Lampung Timur", lat: -5.11, lng: 105.68, driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Pesisir Barat, Lampung", instansi: "BPN Pesisir Barat", lat: -5.192, lng: 103.858, driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Godean, Sleman", instansi: "BPN Sleman", lat: -7.77, lng: 110.29, driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Gunung Kidul, Yogyakarta", instansi: "KJSB Shinta Aprilia Indarwati", lat: -7.97, lng: 110.61, driveId: "1t-SQLAgLJKtuscrP8klt4kYERHsyBUBs" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Sleman, Yogyakarta", instansi: "BPN Sleman", lat: -7.715, lng: 110.355, driveId: "" },
-            { tahun: 2024, pekerjaan: "Stake Out", lokasi: "DI Tingal, Temanggung", instansi: "BBWS-SO", lat: -7.31, lng: 110.17, driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "DI Tingal, Temanggung", instansi: "BBWS-SO", lat: -7.315, lng: 110.175, driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Way Kanan, Lampung", instansi: "BPN Way Kanan", lat: -4.5, lng: 104.52, driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Gunung Mas, Kalimantan Tengah", instansi: "BPN Kalimantan Tengah", lat: -1.03, lng: 113.83, driveId: "" },
-            { tahun: 2024, pekerjaan: "Foto Udara", lokasi: "Sempor, Kebumen", instansi: "BBWSSO", lat: -7.568, lng: 109.581, driveId: "" },
-            { tahun: 2024, pekerjaan: "Hidrografi", lokasi: "Karawang", instansi: "Karta Bhumi Nusantara", lat: -6.305, lng: 107.301, driveId: "" },
-            { tahun: 2024, pekerjaan: "Topografi", lokasi: "Gumuk Pasir, Parangtritis", instansi: "Rekan", lat: -8.02, lng: 110.323, driveId: "" },
-            { tahun: 2024, pekerjaan: "LOD 1", lokasi: "Karanganyar, Jawa Tengah", instansi: "BPN Karanganyar", lat: -7.597, lng: 110.951, driveId: "" },
-
-            // --- 2025 ---
-            { tahun: 2025, pekerjaan: "Hidrografi", lokasi: "Banjarmasin", instansi: "Obsluzivo Intiloc Indonesia", lat: -3.319, lng: 114.59, driveId: "" },
-            { tahun: 2025, pekerjaan: "Soil Test", lokasi: "Yogyakarta", instansi: "Rekan", lat: -7.795, lng: 110.369, driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Batam, Kepri", instansi: "PT Geoservices", lat: 1.13, lng: 104.053, driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Padang", instansi: "PT Geoservices", lat: -0.947, lng: 100.417, driveId: "" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Jambi", instansi: "PT Geoservices", lat: -1.6, lng: 103.6, driveId: "" },
-            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Batam", instansi: "Rekan", lat: 1.11, lng: 104.03, driveId: "" },
-            { tahun: 2025, pekerjaan: "Pemotretan Udara UAV", lokasi: "Pesisir Barat, Lampung", instansi: "KJSB Shinta Aprilia Indarwati", lat: -5.21, lng: 103.85, driveId: "13DelqhVpjAnVPw4UiyNwbGgsLzhGnFYu" },
-            { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Lampung Barat", instansi: "KJSB Shinta Aprilia Indarwati", lat: -5.14, lng: 104.18, driveId: "" },
-            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Kapuas", instansi: "PT PETA", lat: -2.766, lng: 114.385, driveId: "" },
-            { tahun: 2025, pekerjaan: "DEM / Pemetaan POS", lokasi: "Sungai Progo, Opak, dan Serang (Bantul, Sleman, Klaten)", instansi: "BBWS-SO", lat: -7.8, lng: 110.4, driveId: "1ReOT2vVfSr91qns4d4YdOvavGICJhGiu" },
-            { tahun: 2025, pekerjaan: "Topografi / Detail Desain", lokasi: "DI Kalibawang, Kulon Progo, DIY", instansi: "BBWS-SO", lat: -7.718, lng: 110.22, driveId: "18ku4dVDRy6S43k0lCTBwwo6Dq1NJYwJh" },
-            { tahun: 2025, pekerjaan: "Stakeout Tapak Batas", lokasi: "DI Tingal, Temanggung, Jawa Tengah", instansi: "BBWS-SO", lat: -7.318, lng: 110.168, driveId: "14UVp-NciToXL1QMNDWwhE4ZrGh3aVogZ" },
-            { tahun: 2025, pekerjaan: "Foto Tegak", lokasi: "Kabupaten Rembang", instansi: "Rekan", lat: -6.708, lng: 111.341, driveId: "1xW1M8vm_TE6RzQA2oZMa6PY6lM2e3Rwm" },
-            { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, driveId: "1P1xF3YClr3_AsM_oXm8NUIrHTflOjUsw" }
-        ];
-
-        // Loop data dan buat Marker dengan Simbologi Warna Pin SVG
-        function createPopupContent(item) {
-            const kategori = getCategory(item.pekerjaan);
-
-            return `
-                <div class="popup-card">
-                    <span class="badge-year">${item.tahun}</span>
-                    <h3>${item.pekerjaan}</h3>
-                    <div class="popup-info">
-                        <strong>Kategori:</strong> ${kategori}<br>
-                        <strong>Lokasi:</strong> ${item.lokasi}<br>
-                        <strong>Instansi:</strong> ${item.instansi}
-                    </div>
-                    ${makePhotoHTML(item)}
-                </div>
-            `;
-        }
-
-        dataPengalaman.forEach(item => {
-            const kategori = getCategory(item.pekerjaan);
-            const warna = colorMap[kategori];
-
-            L.marker([item.lat, item.lng], {
-                icon: createPinIcon(warna)
-            })
-            .addTo(map)
-            .bindPopup(createPopupContent(item));
-        });
-
-        // Menambahkan Legenda Peta (Posisi Kanan Atas)
-        const legend = L.control({ position: 'topright' });
-
-        legend.onAdd = function (map) {
-            const div = L.DomUtil.create('div', 'legend');
-            div.innerHTML = '<h4>Legenda Pekerjaan</h4>';
-            
-            for (const [kategori, warna] of Object.entries(colorMap)) {
-                const miniPinSvg = `
-                    <svg class="legend-pin-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="${warna}" stroke="#999" stroke-width="1.5" d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/>
-                        <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/>
-                    </svg>
-                `;
-                div.innerHTML += `
-                    <div class="legend-item">
-                        ${miniPinSvg}
-                        <span>${kategori}</span>
-                    </div>
-                `;
-            }
-            return div;
-        };
-
-        legend.addTo(map);
-
-    </script>
 </body>
 </html>
