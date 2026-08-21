@@ -157,26 +157,28 @@
     <script>
         // ============================================================
         // CARA KERJA: 
-        // Anda hanya perlu mengisi "driveId" pada array dataPengalaman di bawah.
-        // Contoh ID: "1A2B3C4D5E6F7G8H9I0J"
+        // Anda bisa mengisi "driveId" atau "imageUrl" pada array dataPengalaman.
+        // Jika menggunakan GitHub, gunakan parameter imageUrl dengan Raw URL.
         // ============================================================
-
-        // Fungsi untuk mengubah ID Google Drive menjadi URL Gambar yang bisa ditampilkan
-        function getDriveImageUrl(driveId) {
-            if (!driveId || driveId === "") return "";
-            // Format URL publik untuk ditampilkan di tag <img>
-            return `https://drive.google.com/uc?export=view&id=${driveId}`;
-        }
 
         // Fungsi membuat HTML Foto untuk Popup
         function makePhotoHTML(item) {
-            const photoUrl = getDriveImageUrl(item.driveId);
+            let photoUrl = "";
+            
+            // Prioritaskan imageUrl langsung (misal dari GitHub Raw)
+            if (item.imageUrl && item.imageUrl !== "") {
+                photoUrl = item.imageUrl;
+            } 
+            // Jika tidak ada, fallback ke driveId
+            else if (item.driveId && item.driveId !== "") {
+                photoUrl = `https://drive.google.com/uc?export=view&id=${item.driveId}`;
+            }
 
             if (!photoUrl) {
                 return `
                     <div class="popup-img-container">
                         <div class="img-placeholder">
-                            🖼️ <i>Foto belum diisi (Isi driveId)</i>
+                            🖼️ <i>Foto belum diisi (Isi driveId atau imageUrl)</i>
                         </div>
                     </div>`;
             }
@@ -186,7 +188,7 @@
                     <img src="${photoUrl}"
                          alt="Foto Pekerjaan"
                          loading="lazy"
-                         onerror="this.parentElement.innerHTML='<div class="img-placeholder">🖼️ <i>Gagal memuat foto (Cek ID)</i></div>'">
+                         onerror="this.parentElement.innerHTML='<div class=\\'img-placeholder\\'>🖼️ <i>Gagal memuat foto (Cek URL/ID)</i></div>'">
                 </div>`;
         }
 
@@ -240,12 +242,8 @@
 
         // ============================================================
         // DATA PEKERJAAN
-        // PETUNJUK: GANTI "driveId" dengan ID file foto di Google Drive Anda
-        // Contoh: driveId: "1A2B3C4D5E6F7G8H9I0J"
-        // Biarkan kosong ("") jika belum ada fotonya.
         // ============================================================
         const dataPengalaman = [
-
             // --- 2020 ---
             { tahun: 2020, pekerjaan: "Topografi", lokasi: "Wates, Kulon Progo", instansi: "Rekan", lat: -7.861, lng: 110.158, driveId: "" },
             { tahun: 2020, pekerjaan: "Topografi", lokasi: "Godean, Sleman", instansi: "Rekan", lat: -7.768, lng: 110.294, driveId: "" },
@@ -320,7 +318,9 @@
             { tahun: 2025, pekerjaan: "Topografi / Detail Desain", lokasi: "DI Kalibawang, Kulon Progo, DIY", instansi: "BBWS-SO", lat: -7.718, lng: 110.22, driveId: "18ku4dVDRy6S43k0lCTBwwo6Dq1NJYwJh" },
             { tahun: 2025, pekerjaan: "Stakeout Tapak Batas", lokasi: "DI Tingal, Temanggung, Jawa Tengah", instansi: "BBWS-SO", lat: -7.318, lng: 110.168, driveId: "14UVp-NciToXL1QMNDWwhE4ZrGh3aVogZ" },
             { tahun: 2025, pekerjaan: "Foto Tegak", lokasi: "Kabupaten Rembang", instansi: "Rekan", lat: -6.708, lng: 111.341, driveId: "1xW1M8vm_TE6RzQA2oZMa6PY6lM2e3Rwm" },
-            { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, driveId: "1P1xF3YClr3_AsM_oXm8NUIrHTflOjUsw" }
+            
+            // TITIK YANG DIUPDATE DENGAN GAMBAR GITHUB:
+            { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, driveId: "", imageUrl: "https://raw.githubusercontent.com/agghstn-source/Geoarta-Sinar-Mandala/main/pembuatan%20Peta%20Foto%20Tegak%20di%20Kabupaten%20Malang%202025.png" }
         ];
 
         // Loop data dan buat Marker dengan Simbologi Warna Pin SVG
@@ -361,23 +361,23 @@
             
             for (const [kategori, warna] of Object.entries(colorMap)) {
                 const miniPinSvg = `
-                    <svg class="legend-pin-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
-                        <path fill="${warna}" stroke="#999" stroke-width="1.5" d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/>
-                        <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/>
-                    </svg>
-                `;
-                div.innerHTML += `
-                    <div class="legend-item">
-                        ${miniPinSvg}
-                        <span>${kategori}</span>
-                    </div>
-                `;
-            }
-            return div;
-        };
-
-        legend.addTo(map);
-
-    </script>
-</body>
+                    <svg class="legend-pin-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"> 
+                        <path fill="${warna}" stroke="#999" stroke-width="1.5" d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/> 
+                        <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/> 
+                    </svg> 
+                `; 
+                div.innerHTML += ` 
+                    <div class="legend-item"> 
+                        ${miniPinSvg} 
+                        <span>${kategori}</span> 
+                    </div> 
+                `; 
+            } 
+            return div; 
+        }; 
+ 
+        legend.addTo(map); 
+ 
+    </script> 
+</body> 
 </html>
