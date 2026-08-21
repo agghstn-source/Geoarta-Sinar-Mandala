@@ -159,10 +159,10 @@
         function makePhotoHTML(item) {
             let photoUrl = "";
             
-            if (item.imageUrl && item.imageUrl !== "") {
+            if (item.imageUrl && item.imageUrl.trim() !== "") {
                 photoUrl = item.imageUrl;
-            } else if (item.driveId && item.driveId !== "") {
-                photoUrl = `https://drive.google.com/uc?export=view&id=${item.driveId}`;
+            } else if (item.driveId && item.driveId.trim() !== "") {
+                photoUrl = `https://lh3.googleusercontent.com/d/${item.driveId}`;
             }
 
             if (!photoUrl) {
@@ -176,7 +176,7 @@
 
             return `
                 <div class="popup-img-container">
-                    <img src="${photoUrl}" alt="Foto Pekerjaan" loading="lazy">
+                    <img src="${photoUrl}" alt="Foto Pekerjaan" loading="lazy" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'img-placeholder\\'>⚠️ Gagal memuat foto</div>';">
                 </div>`;
         }
 
@@ -345,22 +345,22 @@
             
             for (const [kategori, warna] of Object.entries(colorMap)) {
                 const miniPinSvg = `
-                    <svg class="legend-pin-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg"> 
-                        <path fill="${warna}" stroke="#999" stroke-width="1.5" d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/> 
-                        <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/> 
-                    </svg> 
-                `; 
-                div.innerHTML += ` 
-                    <div class="legend-item"> 
-                        ${miniPinSvg} 
-                        <span>${kategori}</span> 
-                    </div> 
-                `; 
-            } 
-            return div; 
-        }; 
- 
-        legend.addTo(map); 
-    </script> 
-</body> 
+                    <svg class="legend-pin-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="${warna}" stroke="#999" stroke-width="1.5" d="M12 0C5.37 0 0 5.37 0 12c0 9 12 24 12 24s12-15 12-24c0-6.63-5.37-12-12-12z"/>
+                        <circle cx="12" cy="11" r="4.5" fill="#FFFFFF"/>
+                    </svg>
+                `;
+                div.innerHTML += `
+                    <div class="legend-item">
+                        ${miniPinSvg}
+                        <span>${kategori}</span>
+                    </div>
+                `;
+            }
+            return div;
+        };
+
+        legend.addTo(map);
+    </script>
+</body>
 </html>
