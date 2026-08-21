@@ -155,22 +155,13 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
     <script>
-        // ============================================================
-        // CARA KERJA: 
-        // Anda bisa mengisi "driveId" atau "imageUrl" pada array dataPengalaman.
-        // Jika menggunakan GitHub, gunakan parameter imageUrl dengan Raw URL.
-        // ============================================================
-
         // Fungsi membuat HTML Foto untuk Popup
         function makePhotoHTML(item) {
             let photoUrl = "";
             
-            // Prioritaskan imageUrl langsung (misal dari GitHub Raw)
             if (item.imageUrl && item.imageUrl !== "") {
                 photoUrl = item.imageUrl;
-            } 
-            // Jika tidak ada, fallback ke driveId
-            else if (item.driveId && item.driveId !== "") {
+            } else if (item.driveId && item.driveId !== "") {
                 photoUrl = `https://drive.google.com/uc?export=view&id=${item.driveId}`;
             }
 
@@ -178,17 +169,14 @@
                 return `
                     <div class="popup-img-container">
                         <div class="img-placeholder">
-                            🖼️ <i>Foto belum diisi (Isi driveId atau imageUrl)</i>
+                            🖼️ <i>Foto belum diisi</i>
                         </div>
                     </div>`;
             }
 
             return `
                 <div class="popup-img-container">
-                    <img src="${photoUrl}"
-                         alt="Foto Pekerjaan"
-                         loading="lazy"
-                         onerror="this.parentElement.innerHTML='<div class=\\'img-placeholder\\'>🖼️ <i>Gagal memuat foto (Cek URL/ID)</i></div>'">
+                    <img src="${photoUrl}" alt="Foto Pekerjaan" loading="lazy">
                 </div>`;
         }
 
@@ -203,11 +191,11 @@
 
         // Pemetaan Warna berdasarkan Kategori
         const colorMap = {
-            "Pengukuran Topografi": "#D2B48C",       // Cokelat Muda (Tanah)
-            "Pengukuran Fotogrametri": "#38BDF8",   // Biru Muda (Langit)
-            "Pengukuran Batimetri": "#1E3A8A",      // Biru Tua (Air)
-            "Pengukuran BM / Kontrol Geodetik": "#8B4513", // Cokelat Tua (Tanah)
-            "Pengolahan Data Spasial": "#4ADE80"    // Hijau Muda (Citra Satelit)
+            "Pengukuran Topografi": "#D2B48C",
+            "Pengukuran Fotogrametri": "#38BDF8",
+            "Pengukuran Batimetri": "#1E3A8A",
+            "Pengukuran BM / Kontrol Geodetik": "#8B4513",
+            "Pengolahan Data Spasial": "#4ADE80"
         };
 
         // Fungsi penentuan kategori dari nama pekerjaan
@@ -219,10 +207,10 @@
             if (p.includes('stake out') || p.includes('stakeout') || p.includes('soil test')) return "Pengukuran BM / Kontrol Geodetik";
             if (p.includes('lod 1') || p.includes('dem')) return "Pengolahan Data Spasial";
             
-            return "Pengukuran Topografi"; // Default Fallback
+            return "Pengukuran Topografi";
         }
 
-        // Fungsi membuat SVG Icon Pin Peta Klasik
+        // Fungsi membuat SVG Icon Pin Peta
         function createPinIcon(color) {
             const svgHtml = `
                 <svg class="pin-svg" width="26" height="38" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
@@ -240,9 +228,7 @@
             });
         }
 
-        // ============================================================
         // DATA PEKERJAAN
-        // ============================================================
         const dataPengalaman = [
             // --- 2020 ---
             { tahun: 2020, pekerjaan: "Topografi", lokasi: "Wates, Kulon Progo", instansi: "Rekan", lat: -7.861, lng: 110.158, driveId: "" },
@@ -318,12 +304,10 @@
             { tahun: 2025, pekerjaan: "Topografi / Detail Desain", lokasi: "DI Kalibawang, Kulon Progo, DIY", instansi: "BBWS-SO", lat: -7.718, lng: 110.22, driveId: "18ku4dVDRy6S43k0lCTBwwo6Dq1NJYwJh" },
             { tahun: 2025, pekerjaan: "Stakeout Tapak Batas", lokasi: "DI Tingal, Temanggung, Jawa Tengah", instansi: "BBWS-SO", lat: -7.318, lng: 110.168, driveId: "14UVp-NciToXL1QMNDWwhE4ZrGh3aVogZ" },
             { tahun: 2025, pekerjaan: "Foto Tegak", lokasi: "Kabupaten Rembang", instansi: "Rekan", lat: -6.708, lng: 111.341, driveId: "1xW1M8vm_TE6RzQA2oZMa6PY6lM2e3Rwm" },
-            
-            // TITIK YANG DIUPDATE DENGAN GAMBAR GITHUB:
             { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "KJSB Agus Purwanto", lat: -8.131, lng: 112.571, driveId: "", imageUrl: "https://raw.githubusercontent.com/agghstn-source/Geoarta-Sinar-Mandala/main/pembuatan%20Peta%20Foto%20Tegak%20di%20Kabupaten%20Malang%202025.png" }
         ];
 
-        // Loop data dan buat Marker dengan Simbologi Warna Pin SVG
+        // Loop data dan buat Marker
         function createPopupContent(item) {
             const kategori = getCategory(item.pekerjaan);
 
@@ -352,7 +336,7 @@
             .bindPopup(createPopupContent(item));
         });
 
-        // Menambahkan Legenda Peta (Posisi Kanan Atas)
+        // Menambahkan Legenda Peta
         const legend = L.control({ position: 'topright' });
 
         legend.onAdd = function (map) {
@@ -377,7 +361,6 @@
         }; 
  
         legend.addTo(map); 
- 
     </script> 
 </body> 
 </html>
