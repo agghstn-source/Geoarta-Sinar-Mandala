@@ -142,8 +142,8 @@
             background: #ebf4ff;
             font-weight: 600;
         }
-        .legend-item:last-child {
-            margin-bottom: 0;
+        .legend-item span {
+            font-weight: 600;
         }
         .legend h4 {
             cursor: pointer;
@@ -156,6 +156,51 @@
             height: 20px;
             margin-right: 8px;
             display: inline-block;
+            flex-shrink: 0;
+        }
+
+        /* Judul sub-bagian di dalam Legenda Peta */
+        .legend-section-title {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: #a0aec0;
+            margin: 10px 0 6px 0;
+            padding-top: 8px;
+            border-top: 1px solid #edf2f7;
+        }
+        .legend-section-title:first-of-type {
+            border-top: none;
+            padding-top: 0;
+            margin-top: 0;
+        }
+
+        /* Chip Tahun */
+        .legend-years {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .year-chip {
+            padding: 4px 11px;
+            border-radius: 14px;
+            background: #f0f4f8;
+            color: #2d3748;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.15s ease;
+            user-select: none;
+        }
+        .year-chip:hover {
+            background: #e2e8f0;
+        }
+        .year-chip.active {
+            background: #1a365d;
+            color: #ffffff;
+            border-color: #1a365d;
         }
     </style>
 </head>
@@ -362,20 +407,22 @@
             .addTo(map)
             .bindPopup(createPopupContent(item));
 
-            allMarkers.push({ marker, kategori });
+            allMarkers.push({ marker, kategori, tahun: item.tahun });
         });
 
-        // Filter marker berdasarkan kategori yang diklik di legenda
-        let activeFilter = null;
-        function filterByCategory(kategori) {
-            if (activeFilter === kategori) {
-                activeFilter = null;
-            } else {
-                activeFilter = kategori;
-            }
+        // Daftar tahun unik yang tersedia di data (urut menaik)
+        const daftarTahun = [...new Set(dataPengalaman.map(item => item.tahun))].sort((a, b) => a - b);
 
-            allMarkers.forEach(({ marker, kategori: markerKategori }) => {
-                const shouldShow = !activeFilter || markerKategori === activeFilter;
+        // Filter marker berdasarkan kategori DAN/ATAU tahun yang diklik di legenda
+        let activeKategori = null;
+        let activeTahun = null;
+
+        function terapkanFilter() {
+            allMarkers.forEach(({ marker, kategori, tahun }) => {
+                const cocokKategori = !activeKategori || kategori === activeKategori;
+                const cocokTahun = !activeTahun || tahun === activeTahun;
+                const shouldShow = cocokKategori && cocokTahun;
+
                 if (shouldShow) {
                     if (!map.hasLayer(marker)) marker.addTo(map);
                 } else {
@@ -384,8 +431,27 @@
             });
 
             document.querySelectorAll('.legend-item').forEach(el => {
-                el.classList.toggle('active', el.dataset.kategori === activeFilter);
+                el.classList.toggle('active', el.dataset.kategori === activeKategori);
             });
+            document.querySelectorAll('.year-chip').forEach(el => {
+                el.classList.toggle('active', Number(el.dataset.tahun) === activeTahun);
+            });
+        }
+
+        function filterByCategory(kategori) {
+            activeKategori = (activeKategori === kategori) ? null : kategori;
+            terapkanFilter();
+        }
+
+        function filterByYear(tahun) {
+            activeTahun = (activeTahun === tahun) ? null : tahun;
+            terapkanFilter();
+        }
+
+        function resetSemuaFilter() {
+            activeKategori = null;
+            activeTahun = null;
+            terapkanFilter();
         }
 
         // Menambahkan Legenda Peta
@@ -393,8 +459,11 @@
 
         legend.onAdd = function (map) {
             const div = L.DomUtil.create('div', 'legend');
-            div.innerHTML = '<h4 title="Klik untuk tampilkan semua">Legenda Pekerjaan</h4>';
-            
+            div.innerHTML = '<h4 title="Klik untuk tampilkan semua">Legenda Peta</h4>';
+
+            // --- Bagian: Jenis Pekerjaan ---
+            div.innerHTML += '<div class="legend-section-title">Jenis Pekerjaan</div>';
+
             for (const [kategori, warna] of Object.entries(colorMap)) {
                 const miniPinSvg = `
                     <svg class="legend-pin-icon" viewBox="0 0 24 36" xmlns="http://www.w3.org/2000/svg">
@@ -405,10 +474,16 @@
                 div.innerHTML += `
                     <div class="legend-item" data-kategori="${kategori}">
                         ${miniPinSvg}
-                        <span>${kategori}</span>
+                        <span style="color:${warna};">${kategori}</span>
                     </div>
                 `;
             }
+
+            // --- Bagian: Tahun ---
+            div.innerHTML += '<div class="legend-section-title">Tahun</div>';
+            div.innerHTML += '<div class="legend-years">' +
+                daftarTahun.map(tahun => `<span class="year-chip" data-tahun="${tahun}">${tahun}</span>`).join('') +
+                '</div>';
 
             // Cegah klik di legenda ikut menggeser/zoom peta
             L.DomEvent.disableClickPropagation(div);
@@ -416,7 +491,10 @@
             div.querySelectorAll('.legend-item').forEach(el => {
                 el.addEventListener('click', () => filterByCategory(el.dataset.kategori));
             });
-            div.querySelector('h4').addEventListener('click', () => filterByCategory(null));
+            div.querySelectorAll('.year-chip').forEach(el => {
+                el.addEventListener('click', () => filterByYear(Number(el.dataset.tahun)));
+            });
+            div.querySelector('h4').addEventListener('click', () => resetSemuaFilter());
 
             return div;
         };
