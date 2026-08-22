@@ -140,16 +140,113 @@
             margin-right: 8px;
             display: inline-block;
         }
+
+        /* Panel List Tambahan (2026 & Sewa Alat) - tanpa marker peta */
+        #extra-panel {
+            background: white;
+            border-top: 2px solid #1a365d;
+            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-height: 34vh;
+            overflow-y: auto;
+        }
+        .extra-panel-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            cursor: pointer;
+            background: #edf2f7;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #1a365d;
+            position: sticky;
+            top: 0;
+        }
+        .extra-panel-toggle .chevron {
+            transition: transform 0.2s ease;
+            font-size: 0.8rem;
+        }
+        #extra-panel.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+        #extra-panel.collapsed .extra-panel-body {
+            display: none;
+        }
+        .extra-panel-body {
+            padding: 10px 16px 16px;
+        }
+        .extra-group {
+            margin-bottom: 14px;
+        }
+        .extra-group:last-child {
+            margin-bottom: 0;
+        }
+        .extra-group h4 {
+            font-size: 0.85rem;
+            color: #2b6cb0;
+            margin-bottom: 6px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 4px;
+        }
+        .extra-group ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 4px 12px;
+        }
+        .extra-group li {
+            font-size: 0.82rem;
+            color: #4a5568;
+            padding: 3px 0;
+            position: relative;
+            padding-left: 14px;
+        }
+        .extra-group li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #3182ce;
+        }
+        .extra-note {
+            font-size: 0.72rem;
+            color: #a0aec0;
+            margin-top: 8px;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
 
     <header>
         <h1>PT Geoarta Sinar Mandala</h1>
-        <p>Peta Persebaran Pengalaman Pekerjaan (2020 - 2025)</p>
+        <p>Peta Persebaran Pengalaman Pekerjaan (2020 - 2026)</p>
     </header>
 
     <div id="map"></div>
+
+    <!-- Panel Tambahan: 2026 & Sewa Alat (belum ada lokasi, jadi belum jadi marker) -->
+    <div id="extra-panel">
+        <div class="extra-panel-toggle" onclick="document.getElementById('extra-panel').classList.toggle('collapsed')">
+            <span>📋 Daftar Tambahan: Pekerjaan 2026 &amp; Sewa Alat</span>
+            <span class="chevron">▾</span>
+        </div>
+        <div class="extra-panel-body">
+            <div class="extra-group">
+                <h4>Sewa Alat</h4>
+                <ul>
+                    <li>Pasca Sarjana Geografi Pembangunan UGM</li>
+                    <li>Pasca Sarjana Ilmu Lingkungan UNS</li>
+                    <li>Sarjana Kehutanan UGM</li>
+                    <li>PT Arkabumi</li>
+                    <li>PT Gamma Nusa Multisolusi</li>
+                    <li>PT Fajar Intraco</li>
+                    <li>PT Rekanusa Pracipta Konsultindo</li>
+                </ul>
+            </div>
+            <div class="extra-note">Detail pekerjaan &amp; lokasi belum tersedia, jadi belum ditampilkan sebagai marker di peta.</div>
+        </div>
+    </div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -202,10 +299,10 @@
         function getCategory(pekerjaan) {
             const p = pekerjaan.toLowerCase();
             if (p.includes('topografi')) return "Pengukuran Topografi";
-            if (p.includes('foto udara') || p.includes('lidar') || p.includes('video') || p.includes('pemotretan udara') || p.includes('peta foto tegak') || p.includes('foto tegak')) return "Pengukuran Fotogrametri";
+            if (p.includes('foto udara') || p.includes('lidar') || p.includes('video') || p.includes('pemotretan udara') || p.includes('peta foto tegak') || p.includes('foto tegak') || p.includes('fotogrametri')) return "Pengukuran Fotogrametri";
             if (p.includes('hidrografi') || p.includes('batimetri') || p.includes('usv')) return "Pengukuran Batimetri";
             if (p.includes('stake out') || p.includes('stakeout') || p.includes('soil test')) return "Pengukuran BM / Kontrol Geodetik";
-            if (p.includes('lod 1') || p.includes('dem')) return "Pengolahan Data Spasial";
+            if (p.includes('lod 1') || p.includes('dem') || p.includes('sig')) return "Pengolahan Data Spasial";
             
             return "Pengukuran Topografi";
         }
@@ -299,12 +396,20 @@
             { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Batam", instansi: "Rekan", lat: 1.11, lng: 104.03, driveId: "" },
             { tahun: 2025, pekerjaan: "Pemotretan Udara UAV", lokasi: "Pesisir Barat, Lampung", instansi: "Kantor Jasa Surveyor Berlisensi (KJSB) Shinta Aprilia Indarwati", lat: -5.21, lng: 103.85, driveId: "13DelqhVpjAnVPw4UiyNwbGgsLzhGnFYu" },
             { tahun: 2025, pekerjaan: "Foto Udara", lokasi: "Lampung Barat", instansi: "Kantor Jasa Surveyor Berlisensi (KJSB) Shinta Aprilia Indarwati", lat: -5.14, lng: 104.18, driveId: "" },
-            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Kapuas", instansi: "PT PETA", lat: -2.766, lng: 114.385, driveId: "" },
+            { tahun: 2025, pekerjaan: "Batimetri", lokasi: "Kapuas", instansi: "PT Polar Ekliptika Terra Akshata", lat: -2.766, lng: 114.385, driveId: "" },
             { tahun: 2025, pekerjaan: "DEM / Pemetaan POS", lokasi: "Sungai Progo, Opak, dan Serang (Bantul, Sleman, Klaten)", instansi: "Balai Besar Wilayah Sungai Serayu Opak (BBWS SO)", lat: -7.8, lng: 110.4, driveId: "1ReOT2vVfSr91qns4d4YdOvavGICJhGiu" },
             { tahun: 2025, pekerjaan: "Topografi / Detail Desain", lokasi: "DI Kalibawang, Kulon Progo, DIY", instansi: "Balai Besar Wilayah Sungai Serayu Opak (BBWS SO)", lat: -7.718, lng: 110.22, driveId: "18ku4dVDRy6S43k0lCTBwwo6Dq1NJYwJh" },
             { tahun: 2025, pekerjaan: "Stakeout Tapak Batas", lokasi: "DI Tingal, Temanggung, Jawa Tengah", instansi: "Balai Besar Wilayah Sungai Serayu Opak (BBWS SO)", lat: -7.318, lng: 110.168, driveId: "14UVp-NciToXL1QMNDWwhE4ZrGh3aVogZ" },
             { tahun: 2025, pekerjaan: "Foto Tegak", lokasi: "Kabupaten Rembang", instansi: "Rekan", lat: -6.708, lng: 111.341, driveId: "1xW1M8vm_TE6RzQA2oZMa6PY6lM2e3Rwm" },
-            { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "Kantor Jasa Surveyor Berlisensi (KJSB) Agus Purwanto", lat: -8.131, lng: 112.571, driveId: "", imageUrl: "https://raw.githubusercontent.com/agghstn-source/Geoarta-Sinar-Mandala/main/pembuatan%20Peta%20Foto%20Tegak%20di%20Kabupaten%20Malang%202025.png" }
+            { tahun: 2025, pekerjaan: "Pembuatan Peta Foto Tegak", lokasi: "Kabupaten Malang", instansi: "Kantor Jasa Surveyor Berlisensi (KJSB) Agus Purwanto", lat: -8.131, lng: 112.571, driveId: "", imageUrl: "https://raw.githubusercontent.com/agghstn-source/Geoarta-Sinar-Mandala/main/pembuatan%20Peta%20Foto%20Tegak%20di%20Kabupaten%20Malang%202025.png" },
+
+            // --- 2026 ---
+            { tahun: 2026, pekerjaan: "Fotogrametri", lokasi: "Kotawaringin Timur", instansi: "PT Geoservices", lat: -2.53, lng: 112.95, driveId: "" },
+            { tahun: 2026, pekerjaan: "Fotogrametri", lokasi: "Kediri", instansi: "Kantor Jasa Surveyor Berlisensi (KJSB) Agus Purwanto", lat: -7.848, lng: 112.017, driveId: "" },
+            { tahun: 2026, pekerjaan: "Fotogrametri", lokasi: "Rembang", instansi: "PT Gamma Nusa Multisolusi", lat: -6.708, lng: 111.341, driveId: "" },
+            { tahun: 2026, pekerjaan: "SIG", lokasi: "Bantul, Sleman, Temanggung", instansi: "Balai Besar Wilayah Sungai Serayu Opak (BBWS SO)", lat: -7.8, lng: 110.35, driveId: "" },
+            { tahun: 2026, pekerjaan: "Topografi", lokasi: "Banjarnegara, Banyumas, Cilacap dan Purbalingga", instansi: "Balai Besar Wilayah Sungai Serayu Opak (BBWS SO)", lat: -7.43, lng: 109.23, driveId: "" },
+            { tahun: 2026, pekerjaan: "Topografi, Batimetri, Fotogrametri", lokasi: "Bantul", instansi: "Balai Besar Wilayah Sungai Serayu Opak (BBWS SO)", lat: -7.888, lng: 110.329, driveId: "" }
         ];
 
         // Loop data dan buat Marker
