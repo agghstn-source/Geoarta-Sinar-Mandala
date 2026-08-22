@@ -130,89 +130,32 @@
             display: flex;
             align-items: center;
             margin-bottom: 6px;
+            cursor: pointer;
+            padding: 3px 5px;
+            border-radius: 5px;
+            transition: background 0.15s ease;
+        }
+        .legend-item:hover {
+            background: #f0f4f8;
+        }
+        .legend-item.active {
+            background: #ebf4ff;
+            font-weight: 600;
         }
         .legend-item:last-child {
             margin-bottom: 0;
+        }
+        .legend h4 {
+            cursor: pointer;
+        }
+        .legend h4:hover {
+            color: #2b6cb0;
         }
         .legend-pin-icon {
             width: 16px;
             height: 20px;
             margin-right: 8px;
             display: inline-block;
-        }
-
-        /* Panel List Tambahan (2026 & Sewa Alat) - tanpa marker peta */
-        #extra-panel {
-            background: white;
-            border-top: 2px solid #1a365d;
-            box-shadow: 0 -2px 8px rgba(0,0,0,0.1);
-            z-index: 1000;
-            max-height: 34vh;
-            overflow-y: auto;
-        }
-        .extra-panel-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 16px;
-            cursor: pointer;
-            background: #edf2f7;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #1a365d;
-            position: sticky;
-            top: 0;
-        }
-        .extra-panel-toggle .chevron {
-            transition: transform 0.2s ease;
-            font-size: 0.8rem;
-        }
-        #extra-panel.collapsed .chevron {
-            transform: rotate(-90deg);
-        }
-        #extra-panel.collapsed .extra-panel-body {
-            display: none;
-        }
-        .extra-panel-body {
-            padding: 10px 16px 16px;
-        }
-        .extra-group {
-            margin-bottom: 14px;
-        }
-        .extra-group:last-child {
-            margin-bottom: 0;
-        }
-        .extra-group h4 {
-            font-size: 0.85rem;
-            color: #2b6cb0;
-            margin-bottom: 6px;
-            border-bottom: 1px solid #e2e8f0;
-            padding-bottom: 4px;
-        }
-        .extra-group ul {
-            list-style: none;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 4px 12px;
-        }
-        .extra-group li {
-            font-size: 0.82rem;
-            color: #4a5568;
-            padding: 3px 0;
-            position: relative;
-            padding-left: 14px;
-        }
-        .extra-group li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: #3182ce;
-        }
-        .extra-note {
-            font-size: 0.72rem;
-            color: #a0aec0;
-            margin-top: 8px;
-            font-style: italic;
         }
     </style>
 </head>
@@ -224,29 +167,6 @@
     </header>
 
     <div id="map"></div>
-
-    <!-- Panel Tambahan: 2026 & Sewa Alat (belum ada lokasi, jadi belum jadi marker) -->
-    <div id="extra-panel">
-        <div class="extra-panel-toggle" onclick="document.getElementById('extra-panel').classList.toggle('collapsed')">
-            <span>📋 Daftar Tambahan: Pekerjaan 2026 &amp; Sewa Alat</span>
-            <span class="chevron">▾</span>
-        </div>
-        <div class="extra-panel-body">
-            <div class="extra-group">
-                <h4>Sewa Alat</h4>
-                <ul>
-                    <li>Pasca Sarjana Geografi Pembangunan UGM</li>
-                    <li>Pasca Sarjana Ilmu Lingkungan UNS</li>
-                    <li>Sarjana Kehutanan UGM</li>
-                    <li>PT Arkabumi</li>
-                    <li>PT Gamma Nusa Multisolusi</li>
-                    <li>PT Fajar Intraco</li>
-                    <li>PT Rekanusa Pracipta Konsultindo</li>
-                </ul>
-            </div>
-            <div class="extra-note">Detail pekerjaan &amp; lokasi belum tersedia, jadi belum ditampilkan sebagai marker di peta.</div>
-        </div>
-    </div>
 
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -290,7 +210,7 @@
         const colorMap = {
             "Pengukuran Topografi": "#D2B48C",
             "Pengukuran Fotogrametri": "#38BDF8",
-            "Pengukuran Batimetri": "#1E3A8A",
+            "Pengukuran Batimetri": "#4C6EF5",
             "Pengukuran BM / Kontrol Geodetik": "#8B4513",
             "Pengolahan Data Spasial": "#4ADE80"
         };
@@ -430,23 +350,50 @@
             `;
         }
 
+        const allMarkers = [];
+
         dataPengalaman.forEach(item => {
             const kategori = getCategory(item.pekerjaan);
             const warna = colorMap[kategori];
 
-            L.marker([item.lat, item.lng], {
+            const marker = L.marker([item.lat, item.lng], {
                 icon: createPinIcon(warna)
             })
             .addTo(map)
             .bindPopup(createPopupContent(item));
+
+            allMarkers.push({ marker, kategori });
         });
+
+        // Filter marker berdasarkan kategori yang diklik di legenda
+        let activeFilter = null;
+        function filterByCategory(kategori) {
+            if (activeFilter === kategori) {
+                activeFilter = null;
+            } else {
+                activeFilter = kategori;
+            }
+
+            allMarkers.forEach(({ marker, kategori: markerKategori }) => {
+                const shouldShow = !activeFilter || markerKategori === activeFilter;
+                if (shouldShow) {
+                    if (!map.hasLayer(marker)) marker.addTo(map);
+                } else {
+                    if (map.hasLayer(marker)) map.removeLayer(marker);
+                }
+            });
+
+            document.querySelectorAll('.legend-item').forEach(el => {
+                el.classList.toggle('active', el.dataset.kategori === activeFilter);
+            });
+        }
 
         // Menambahkan Legenda Peta
         const legend = L.control({ position: 'topright' });
 
         legend.onAdd = function (map) {
             const div = L.DomUtil.create('div', 'legend');
-            div.innerHTML = '<h4>Legenda Pekerjaan</h4>';
+            div.innerHTML = '<h4 title="Klik untuk tampilkan semua">Legenda Pekerjaan</h4>';
             
             for (const [kategori, warna] of Object.entries(colorMap)) {
                 const miniPinSvg = `
@@ -456,12 +403,21 @@
                     </svg>
                 `;
                 div.innerHTML += `
-                    <div class="legend-item">
+                    <div class="legend-item" data-kategori="${kategori}">
                         ${miniPinSvg}
                         <span>${kategori}</span>
                     </div>
                 `;
             }
+
+            // Cegah klik di legenda ikut menggeser/zoom peta
+            L.DomEvent.disableClickPropagation(div);
+
+            div.querySelectorAll('.legend-item').forEach(el => {
+                el.addEventListener('click', () => filterByCategory(el.dataset.kategori));
+            });
+            div.querySelector('h4').addEventListener('click', () => filterByCategory(null));
+
             return div;
         };
 
